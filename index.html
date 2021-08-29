@@ -11,6 +11,9 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
 
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
     <!-- My CSS -->
     <link href="style/styles.css" rel="stylesheet" />
 
@@ -63,15 +66,15 @@
     <section id="about">
       <div class="container">
         <div class="row mb-3">
-          <div class="col text-center">
+          <div class="col text-center" data-aos="fade-down">
             <h2>About Me</h2>
           </div>
         </div>
         <div class="row justify-content-center fs-5 text-center">
-          <div class="col-md-4">
+          <div class="col-md-4" data-aos="fade-right" data-aos-delay="100" data-aos-offset="300">
             <p>Hai! Perkenalkan nama saya Sendhy Kurniawan, Saya adalah seorang Pelajar yang sedang mempelajari Web Development, Editing Foto dan Editing Video.</p>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4" data-aos="fade-left" data-aos-delay="150" data-aos-offset="300">
             <p>Hi! My name is Sendhy Kurniawan, Iam a Student that still learning about Web Development, Photo Editing, and Video Editing.</p>
           </div>
         </div>
@@ -89,16 +92,16 @@
     <!-- Project -->
     <section class="projects" id="projects">
       <div class="container">
-        <div class="row text-center text-white">
-          <div class="col mb-3">
+        <div class="row text-center text-white mb-5">
+          <div class="col mb-3" data-aos="fade-up">
             <div class="h2">Projects</div>
           </div>
         </div>
         <div class="row text-white text-center">
-          <div class="col"><h4>Photo Edit</h4></div>
+          <div class="col" data-aos="fade-up" data-aos-delay="100"><h4>Photo Editing Projects</h4></div>
         </div>
-        <div class="row justify-content-center mb-3">
-          <div class="col-md-6 mb-3">
+        <div class="row justify-content-center">
+          <div class="col-md-4 mb-3" data-aos="flip-left" data-aos-delay="150" data-aos-offset="300">
             <div class="card">
               <img src="img/projects/manipulation/1.jpg" class="card-img-top" alt="..." />
               <div class="card-body">
@@ -106,7 +109,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 mb-3">
+          <div class="col-md-4 mb-3" data-aos="flip-left" data-aos-delay="250" data-aos-offset="350">
             <div class="card">
               <img src="img/projects/manipulation/2.jpg" class="card-img-top" alt="..." />
               <div class="card-body">
@@ -114,29 +117,31 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 mb-3">
-            <div class="card">
-              <img src="img/projects/manipulation/3.jpg" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <p class="card-text">In 2077 what makes you Aesthetic?.</p>
+          <div class="row justify-content-center mb-3">
+            <div class="col-md-4 mb-3" data-aos="flip-right" data-aos-delay="450" data-aos-offset="450">
+              <div class="card">
+                <img src="img/projects/manipulation/3.jpg" class="card-img-top" alt="..." />
+                <div class="card-body">
+                  <p class="card-text">In 2077 what makes you Aesthetic?.</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-6 mb-3">
-            <div class="card">
-              <img src="img/projects/manipulation/4.jpg" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <p class="card-text">"The story of the Universe is our story"</p>
+            <div class="col-md-4 mb-3" data-aos="flip-left" data-aos-delay="350" data-aos-offset="400">
+              <div class="card">
+                <img src="img/projects/manipulation/4.jpg" class="card-img-top" alt="..." />
+                <div class="card-body">
+                  <p class="card-text">"The story of the Universe is our story"</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col text-white text-center">
+          <div class="col text-white text-center" data-aos="fade-up">
             <h3>Web Projects</h3>
           </div>
           <div class="row justify-content-center mb-3">
-            <div class="col-md-8">
+            <div class="col-md-8" data-aos="zoom-in" data-aos-offset="300">
               <div class="card">
                 <img src="img/projects/web/1.jpg" class="card-img-top" alt="CUFFOURVOL2" />
                 <div class="card-body">
@@ -164,7 +169,7 @@
 
     <!-- Contact -->
     <section id="contact">
-      <div class="container">
+      <div class="container" data-aos="fade-up">
         <div class="row text-center mb-3">
           <div class="col">
             <h2>Contact Me</h2>
@@ -174,7 +179,7 @@
           <div class="col-md-6">
             <div class="alert alert-success alert-dismissible fade show d-none my-alert" role="alert">
               <strong>Thanks</strong> Your message is already submited.
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="closeButton"></button>
             </div>
             <form name="contact-form" id="form">
               <div class="mb-3">
@@ -253,6 +258,13 @@
             console.log("Success!", response);
           })
           .catch((error) => console.error("Error!", error.message));
+      });
+    </script>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        once: true,
       });
     </script>
   </body>
