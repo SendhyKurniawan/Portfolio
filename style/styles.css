@@ -1,13 +1,25 @@
+.navbar {
+  background-color: #1d3557;
+}
+
 .jumbotron {
   padding: 2rem 1rem;
   padding-top: 5rem;
-  background-color: #13e66bce;
+  background-color: #e63946;
 }
 
 .projects {
-  background-color: #13e66bce;
+  background-image: linear-gradient(#e63946, #fff);
 }
 
 section {
   padding-top: 5rem;
+}
+
+#certif {
+  width: 300px;
+}
+
+footer {
+  background-color: #1d3557;
 }
