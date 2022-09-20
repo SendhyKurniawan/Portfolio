@@ -1,15 +1,15 @@
 .navbar {
-  background-color: #1d3557;
+  background-color: #f1faee;
 }
 
 .jumbotron {
   padding: 2rem 1rem;
   padding-top: 5rem;
-  background-color: #e63946;
+  background-color: #a8dadc;
 }
 
 .projects {
-  background-image: linear-gradient(#e63946, #fff);
+  background-image: linear-gradient(#a8dadc, #fff);
 }
 
 section {
@@ -21,5 +21,5 @@ section {
 }
 
 footer {
-  background-color: #1d3557;
+  background-color: #a8dadc;
 }
