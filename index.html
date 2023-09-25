@@ -1,45 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sendhy Kurniawan</title>
     <!-- Bootstrap CSS -->
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous" />
-    <!-- AOS -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     <!-- My CSS -->
-    <link href="style/styles.css" rel="stylesheet" />
-
-    <title>My Portofolio | Sendhy Kurniawan</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <!-- Navbar -->
-    <nav class="navbar navbar fixed-top navbar-expand-lg navbar-light shadow-sm">
+    <nav class="navbar navbar fixed-top navbar-expand-lg navbar-dark bg-transparent">
       <div class="container">
-        <a class="navbar-brand" href="#">Sendhy Kurniawan</a>
+        <a class="navbar-brand fw-bold" href="#">KURSE CO.</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#">Home</a>
+              <a class="nav-link nav-link-active" aria-current="page" href="#" id="home">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#about">About</a>
+              <a class="nav-link" id="projects" href="#projects">Projects</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#projects">Projects</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#contact">Contact</a>
+              <a class="nav-link" id="contact" href="#contact">Contact</a>
             </li>
           </ul>
         </div>
@@ -47,188 +36,169 @@
     </nav>
     <!-- Navbar -->
 
-    <!-- Jumbotron -->
-    <section class="jumbotron text-center text-white" data-aos="fade-down" data-aos-delay="100">
-      <img src="img/foto.jpg" alt="Sendhy Kurniawan" width="200" class="rounded-circle img-thumbnail" />
-      <h1 class="display-4">Sendhy Kurniawan</h1>
-      <p class="lead">Student | Editor | Front-End Web Developer</p>
-    </section>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" data-aos="fade-down" data-aos-delay="100">
-      <path
-        fill="#a8dadc"
-        fill-opacity="1"
-        d="M0,160L24,181.3C48,203,96,245,144,266.7C192,288,240,288,288,256C336,224,384,160,432,138.7C480,117,528,139,576,160C624,181,672,203,720,192C768,181,816,139,864,138.7C912,139,960,181,1008,186.7C1056,192,1104,160,1152,170.7C1200,181,1248,235,1296,229.3C1344,224,1392,160,1416,128L1440,96L1440,0L1416,0C1392,0,1344,0,1296,0C1248,0,1200,0,1152,0C1104,0,1056,0,1008,0C960,0,912,0,864,0C816,0,768,0,720,0C672,0,624,0,576,0C528,0,480,0,432,0C384,0,336,0,288,0C240,0,192,0,144,0C96,0,48,0,24,0L0,0Z"
-      ></path>
-    </svg>
-    <!-- Jumbotron -->
-
-    <!-- About -->
-    <section id="about">
-      <div class="container">
-        <div class="row mb-3">
-          <div class="col text-center" data-aos="fade-down">
-            <h2>About Me</h2>
+    <!-- Wrap -->
+    <div class="wrap" data-0="transform:translateX(0%);" data-1000="transform:translateX(-200%);">
+      <!-- Home -->
+      <section>
+        <div class="content container row d-flex justify-content-center align-items-center">
+          <div class="col-lg-8">
+            <h2 class="nama">
+              Hello <br />
+              My name is <br />
+              Sendhy Kurniawan
+            </h2>
+            <p>I design and develop Website</p>
+            <button class="btn btn-outline-light m-1">Hire Me</button>
+            <button class="btn btn-outline-light m-1">Contact Me</button>
+          </div>
+          <div class="col-lg-4">
+            <!-- <img src="img/sendhykurniawan.png" width="400px" class="image"> -->
           </div>
         </div>
-        <div class="row justify-content-center fs-5 text-center">
-          <div class="col-md-6" data-aos="fade-left" data-aos-delay="150" data-aos-offset="300">
-            <p>Hi! My name is Sendhy Kurniawan, I am a Student that still learning about Web Development, Photo Editing, and Video Editing.</p>
-          </div>
-        </div>
-        <div class="row justify-content-center fs-5 text-center">
-          <div class="col-md-4" data-aos="fade-right" data-aos-delay="100" data-aos-offset="300">
-            <a href="https://api2.sololearn.com/v2/certificates/CT-1A3FPKBF/image/png"><img src="img/certif/sl_html.png" alt="HTML SoloLearn" id="certif"></a>
-          </div>
-          <div class="col-md-4" data-aos="fade-left" data-aos-delay="150" data-aos-offset="300">
-            <a href="https://api2.sololearn.com/v2/certificates/CT-KIFU8ZCT/image/png"><img src="img/certif/sl_css.png" alt="CSS SoloLearn" id="certif"></a>
-          </div>
-        </div>
-        
+      </section>
+      <!-- Home -->
 
-      </div>
-
-    </section>
-    
-    <!-- About -->
-
-    <!-- Project -->
-    <section data-aos="fade-up" data-aos-delay="1200">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-        <path
-          fill="#a8dadc"
-          fill-opacity="1"
-          d="M0,288L24,277.3C48,267,96,245,144,208C192,171,240,117,288,122.7C336,128,384,192,432,229.3C480,267,528,277,576,245.3C624,213,672,139,720,96C768,53,816,43,864,64C912,85,960,139,1008,138.7C1056,139,1104,85,1152,90.7C1200,96,1248,160,1296,197.3C1344,235,1392,245,1416,250.7L1440,256L1440,320L1416,320C1392,320,1344,320,1296,320C1248,320,1200,320,1152,320C1104,320,1056,320,1008,320C960,320,912,320,864,320C816,320,768,320,720,320C672,320,624,320,576,320C528,320,480,320,432,320C384,320,336,320,288,320C240,320,192,320,144,320C96,320,48,320,24,320L0,320Z"
-        ></path>
-      </svg>
-      <div class="container-fluid projects" id="projects">
-        <div class="row text-center text-white mb-5">
-          <div class="col mb-3" data-aos="fade-up">
-            <div class="h2">Projects</div>
+      <!-- projects -->
+      <section>
+        <div class="content container row">
+          <div class="col-lg-6">
+            <div class="projdiv">
+              <h1 class="proj projhover" id="cuffour">CUFFOUR VOL2</h1>
+              <h1 class="proj" id="lynx">LYNX STREZZO NFT</h1>
+              <h1 class="proj" id="lapizzeria">LA PIZZERIA</h1>
+              <h1 class="proj" id="mrs">MRS FURNITURE</h1>
+              <h1 class="proj" id="imedia">IMEDIA 2023</h1>
+            </div>
           </div>
-        </div>
-          <div class="row justify-content-center mb-3">
-                <div class="col-sm-8" data-aos="zoom-in" data-aos-offset="300">
-                  <div class="card shadow mb-5 bg-body rounded">
-                    <div class="card-body">
-                      <h5 class="card-title">CUFFOURVOL2</h5>
-                      <p class="card-text">Simple Page made with HTML, CSS, JS, dan Bootstrap5</p>
-                      <a href="https://cuffourvol2.github.io/cuffourvol2/index.html" class="btn btn-primary">Open</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-8" data-aos="zoom-in" data-aos-offset="300">
-                  <div class="card shadow mb-5 bg-body rounded">
-                    <div class="card-body">
-                      <h5 class="card-title">Lynx Strezzo NFT</h5>
-                      <p class="card-text">Simple landing page made with HTML, CSS, JS, Bootstrap 5, AOS</p>
-                      <p><b>Work in progress</b></p>
-                      <a href="https://sendhykurniawan.github.io/Lynx-Strezzo-NFT-V2/" class="btn btn-primary">Open</a>
-                    </div>
-                  </div>
-                </div>
+          <div class="col-lg-6">
+            <div class="expdiv text-end" id="expdiv">
+              <div class="cuffour exp" id="cuffourexp">
+                <p>
+                  CUFFOUR (Culture Festival of Fifty Four) is a foreign language extracurricular program at SMAN 54 Jakarta.
+                  <br />
+                  CUFFOUR is not limited to focusing only on the theme of Japan. It can also include countries like Korea, Germany, and others, depending on the languages we study in XBASS54.
+                  <br />
+                  <br />
+                  <b>This website is made with HTML, CSS, JS, and Bootstrap5.</b>
+                  <br />
+                  <button class="btn btn btn-outline-light mt-3">Go to the Website</button>
+                </p>
+              </div>
+              <div class="lynx exp d-none" id="lynxexp">
+                <p>
+                  Lynx Strezzo NFT, a digital oasis of boundless creativity and innovation, stands as a veritable gallery of the future, where the infinite possibilities of non-fungible tokens converge to redefine the very essence of
+                  artistic expression and ownership.
+                  <br />
+                  <br />
+                  <b>This website is made with HTML, CSS, JS, AOS, Bootstrap5.</b>
+                  <br />
+                  <button class="btn btn btn-outline-light mt-3">Go to the Website</button>
+                </p>
+              </div>
+              <div class="lapizzeria exp d-none" id="lapizzeriaexp">
+                <p>
+                  La Pizzeria's website project is an educational college assignment, a digital playground where I embark on the intriguing journey of replicating and reinventing another web presence, honing my skills in web development,
+                  design, and user experience.
+                  <br />
+                  <br />
+                  <b>This website is made with HTML, CSS, JS, and Bootstrap5.</b>
+                  <br />
+                  <button class="btn btn btn-outline-light mt-3">Go to the Website</button>
+                </p>
+              </div>
+              <div class="mrs exp d-none" id="mrsexp">
+                <p>
+                  MRS Furniture website project is an educational college assignment, providing me with a unique opportunity to craft an innovative digital platform for a visionary business concept. Through this endeavor, I am refining my
+                  web development and design skills while bringing to life a compelling vision that redefines the future of furniture retail.
+                  <br />
+                  <br />
+                  <b>This website is made with HTML, CSS, JS, AOS, and Bootstrap5.</b>
+                  <br />
+                  <button class="btn btn btn-outline-light mt-3">Go to the Website</button>
+                </p>
+              </div>
+              <div class="imedia exp d-none" id="imediaexp">
+                <p>
+                  IMEDIA Websites, a cutting-edge online platform, assumes the pivotal role of a comprehensive orientation hub tailored to the needs of incoming college students. Within its digital confines, newcomers to academia can find a
+                  wealth of invaluable resources, guidance, and insights, ensuring a seamless transition into the exciting world of higher education.
+                  <br />
+                  <br />
+                  <b>This website is made with HTML, CSS, JS, AOS, and Bootstrap5.</b>
+                  <br />
+                  <button class="btn btn btn-outline-light mt-3">Go to the Website</button>
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    <!-- Project -->
-
-    <!-- Contact -->
-    <section>
-      <div class="container" id="contact" data-aos="fade-up">
-        <div class="row text-center mb-3">
-          <div class="col">
-            <h2>Contact Me</h2>
-          </div>
-        </div>
-        <div class="row justify-content-center mb-3">
-          <div class="col-md-6">
-            <div class="alert alert-success alert-dismissible fade show d-none my-alert" role="alert">
-              <strong>Thanks</strong> Your message is already submited.
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="closeButton"></button>
+      </section>
+      <!-- projects -->
+      <!-- contact -->
+      <section class="contact">
+        <div class="content container">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="card bg-transparent border-light text-white">
+                <div class="card-body">
+                  <h3 class="card-title">My Social Media</h3>
+                  <ul class="list-group list-group-flush">
+                    <a href="https://www.instagram.com/kurniawansendhy/"
+                      ><li class="list-group-item bg-transparent text-white"><i class="bi bi-instagram"></i> @kurniawansendhy</li></a
+                    >
+                    <a href="mailto: sendhy27@gamil.com"
+                      ><li class="list-group-item bg-transparent text-white"><i class="bi bi-envelope"></i> sendhy27@gmail.com</li></a
+                    >
+                    <a href="https://github.com/SendhyKurniawan"
+                      ><li class="list-group-item bg-transparent text-white"><i class="bi bi-github"></i> SendhyKurniawan</li></a
+                    >
+                  </ul>
+                </div>
+              </div>
             </div>
-            <form name="contact-form" id="form">
-              <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" aria-describedby="name" name="nama" />
+            <div class="col-lg-8">
+              <div class="card bg-transparent border-light text-white">
+                <div class="card-body">
+                  <h3 class="card-title">Send me a Message</h3>
+                  <div class="alert alert-success alert-dismissible fade show d-none my-alert" role="alert">
+                    <strong>Thanks</strong> Your message is already submited.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="closeButton"></button>
+                  </div>
+                  <form name="contact-form" id="form">
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Name</label>
+                      <input type="text" class="form-control" id="name" aria-describedby="name" name="nama" />
+                    </div>
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email address</label>
+                      <input type="email" class="form-control" id="email" aria-describedby="email" name="email" />
+                    </div>
+                    <div class="mb-3">
+                      <label for="pesan" class="form-label">Message</label>
+                      <textarea class="form-control" id="pesan:" rows="3" name="pesan"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-outline-light btn-kirim" id="btnKirim">Submit</button>
+                    <button class="btn btn-outline-light btn-loading d-none" type="button" disabled id="btnLoading">
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      Loading...
+                    </button>
+                  </form>
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" aria-describedby="email" name="email" />
-              </div>
-              <div class="mb-3">
-                <label for="pesan" class="form-label">Message</label>
-                <textarea class="form-control" id="pesan:" rows="3" name="pesan"></textarea>
-              </div>
-              <button type="submit" class="btn btn-dark btn-kirim" id="btnKirim">Submit</button>
-              <button class="btn btn-dark btn-loading d-none" type="button" disabled id="btnLoading">
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Loading...
-              </button>
-            </form>
+            </div>
           </div>
         </div>
-        <div class="row text-center">
-          <h3>My Social Media</h3>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-md-6 justify-content-center text-center">
-            <a href="https://www.instagram.com/kurniawansendhy/"><i class="bi bi-instagram fs-1 text-center link-secondary m-3"></i></a>
-            <a href="https://facebook.com/sendhy27/"><i class="bi bi-facebook fs-1 text-center link-secondary m-3"></i></a>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Contact -->
-
-    <!-- Footer -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-      <path
-        fill="#a8dadc"
-        fill-opacity="1"
-        d="M0,192L30,170.7C60,149,120,107,180,90.7C240,75,300,85,360,106.7C420,128,480,160,540,181.3C600,203,660,213,720,218.7C780,224,840,224,900,208C960,192,1020,160,1080,149.3C1140,139,1200,149,1260,160C1320,171,1380,181,1410,186.7L1440,192L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"
-      ></path>
-    </svg>
-    <footer class="text-white text-center pb-3">
-      <p>Created by <a href="https://www.instagram.com/kurniawansendhy/" class="text-white fw-bold">Sendhy Kurniawan</a></p>
-    </footer>
-    <!-- Footer -->
-
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-
-    <script>
-      const scriptURL = "https://script.google.com/macros/s/AKfycbwvQ4JmLS0hgLbA8KKIy7EZHUh6NzhBtAGS7do6Y9cxkKMAPkpggXe6ZBcU1deP8WMI/exec";
-      const form = document.forms["contact-form"];
-      const btnKirim = document.querySelector("btn-kirim");
-      const btnLoading = document.querySelector("btn-loading");
-      const myAlert = document.querySelector(".my-alert");
-
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        //ketika tombol submit diklik
-        //tampilkan loading hilangkan kirim
-        //stuck di classlist
-
-        document.getElementById("btnKirim").classList.add("d-none");
-        document.getElementById("btnLoading").classList.remove("d-none");
-
-        fetch(scriptURL, { method: "POST", body: new FormData(form) })
-          .then((response) => {
-            document.getElementById("btnKirim").classList.remove("d-none");
-            document.getElementById("btnLoading").classList.add("d-none");
-            myAlert.classList.toggle("d-none");
-            form.reset();
-            console.log("Success!", response);
-          })
-          .catch((error) => console.error("Error!", error.message));
-      });
-    </script>
-
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-      AOS.init({
-        once: true,
-      });
+      </section>
+      <!-- contact -->
+    </div>
+    <!-- Wrap -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- My JS -->
+    <script src="script/scirpt.js"></script>
+    <!-- Skrollr JS -->
+    <script src="script/skrollr.js"></script>
+    <script type="text/javascript">
+      var s = skrollr.init();
     </script>
   </body>
 </html>
