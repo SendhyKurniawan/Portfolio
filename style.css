@@ -2,6 +2,9 @@
 
 * {
   scroll-behavior: smooth;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 @font-face {
@@ -60,6 +63,14 @@ body {
   100% {
     background-position: 84% 0%;
   }
+}
+
+nav{
+  background: linear-gradient(178deg, #4801ff, #01aeff);
+  background-size: 400% 400%;
+  -webkit-animation: AnimationName 9s ease infinite;
+  -moz-animation: AnimationName 9s ease infinite;
+  animation: AnimationName 9s ease infinite;
 }
 
 .nav-link-active {
@@ -129,6 +140,11 @@ section {
 
 .image {
   filter: brightness(30%);
+}
+
+footer a {
+  text-decoration: none;
+  color: white;
 }
 
 @media (max-width: 991px) {
