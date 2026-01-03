@@ -1,0 +1,11 @@
+services:
+  protfolio:
+    container_name: portfolio_y2k
+    build: .
+    ports:
+      - "8095:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+    restart: always
