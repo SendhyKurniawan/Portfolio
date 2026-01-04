@@ -1,0 +1,60 @@
+/* Navbar */
+.navbar {
+  background: linear-gradient(90deg, navy, #1084d0) !important;
+  border-bottom: 2px solid #fff;
+  border-top: 2px solid #fff;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.5);
+  padding: 0.5rem 1rem;
+}
+
+.navbar-brand {
+  font-family: var(--header-font);
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff !important;
+  text-shadow: 2px 2px 0px var(--primary-color);
+}
+
+.nav-link {
+  color: var(--text-color) !important;
+  font-family: var(--header-font);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active,
+.nav-link-active {
+  color: var(--primary-color) !important;
+  text-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Window Controls */
+.window-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.win-btn {
+  width: 20px;
+  height: 20px;
+  background: #c0c0c0;
+  border: 2px outset #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  line-height: 1;
+  padding-bottom: 2px;
+}
+
+.win-btn:active {
+  border: 2px inset #fff;
+  padding-top: 2px;
+  padding-bottom: 0;
+}

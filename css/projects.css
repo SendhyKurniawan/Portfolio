@@ -1,0 +1,185 @@
+/* Skills Section */
+.skill-badge {
+  padding: 10px 20px;
+  background: #000;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  font-family: var(--main-font);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  clip-path: none;
+  cursor: help;
+  box-shadow: 4px 4px 0px var(--secondary-color);
+}
+
+.skill-badge:hover {
+  background: var(--primary-color);
+  color: #000;
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px var(--primary-color);
+}
+
+/* Projects Section */
+/* Projects Section - Grid Redesign */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 20px 0;
+}
+
+.y2k-project-card {
+  background: #c0c0c0;
+  border: 2px outset #fff;
+  box-shadow: 4px 4px 0 #000;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.2s;
+}
+
+.y2k-project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 6px 6px 0 #000;
+}
+
+.y2k-window-header {
+  background: linear-gradient(90deg, navy, #1084d0);
+  color: white;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--main-font);
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.y2k-window-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.y2k-control-btn {
+  width: 16px;
+  height: 16px;
+  background: #c0c0c0;
+  border: 1px outset #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: black;
+  cursor: pointer;
+}
+
+.y2k-control-btn:active {
+  border: 1px inset #fff;
+}
+
+.y2k-card-body {
+  padding: 4px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background: #c0c0c0;
+}
+
+.y2k-image-container {
+  border: 2px inset #fff;
+  background: #000;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.y2k-project-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  opacity: 0.9;
+  transition: opacity 0.3s;
+}
+
+.y2k-project-img:hover {
+  opacity: 1;
+}
+
+.y2k-project-info {
+  padding: 10px;
+  background: #fff;
+  border: 2px inset #dfdfdf;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.y2k-project-title {
+  font-family: var(--header-font);
+  font-size: 1rem;
+  color: #000;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.y2k-project-desc {
+  font-family: var(--main-font);
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 15px;
+  flex-grow: 1;
+}
+
+.y2k-tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.y2k-badge {
+  background: #e0e0e0;
+  border: 1px solid #808080;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  font-family: sans-serif;
+  color: #333;
+}
+
+.y2k-action-btn {
+  background: #c0c0c0;
+  border: 2px outset #fff;
+  color: #000;
+  font-family: var(--main-font);
+  text-decoration: none;
+  padding: 5px 10px;
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: auto;
+}
+
+.y2k-action-btn:active {
+  border: 2px inset #fff;
+  transform: translate(1px, 1px);
+}
+
+/* Blog Card Styles */
+.blog-card-img {
+  height: 200px; 
+  object-fit: cover;
+}
+
+.blog-date {
+  font-family: var(--main-font);
+}
+
+.blog-title {
+  font-family: var(--header-font);
+  font-size: 1.2rem;
+  line-height: 1.5;
+}

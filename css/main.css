@@ -1,0 +1,142 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap");
+
+:root {
+  --bg-color: #000000;
+  --card-bg: rgba(0, 0, 50, 0.8);
+  --primary-color: #ff00ff; /* Hot Pink */
+  --secondary-color: #00ff00; /* Lime Green */
+  --accent-color: #00ffff; /* Cyan */
+  --text-color: #e0e0e0;
+  --text-muted: #a0a0a0;
+  --glass-border: 2px solid #c0c0c0;
+  --glow: 0 0 5px #ff00ff;
+  --main-font: "VT323", monospace;
+  --header-font: "Press Start 2P", cursive;
+}
+
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 80px; /* Offset for navbar */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--main-font);
+  font-size: 1.2rem;
+  overflow-x: hidden;
+  margin: 0;
+  position: relative;
+  cursor: crosshair;
+}
+
+/* Background Starry/Grid Effect */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(white 1px, transparent 1px);
+  background-size: 40px 40px, 40px 40px, 100px 100px;
+  background-position: 0 0, 0 0, 20px 20px;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Scrollbar */
+/* Scrollbar - Y2K Style */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+  background: #c0c0c0;
+}
+
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-left: 1px solid #c0c0c0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c0c0c0;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+  box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:active {
+  border-top: 2px solid #404040;
+  border-left: 2px solid #404040;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  box-shadow: none;
+}
+
+::-webkit-scrollbar-corner {
+  background: #c0c0c0;
+}
+
+p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Marquee Bar */
+.marquee-container {
+  background: black;
+  border-bottom: 2px solid #fff;
+  color: lime;
+  font-family: var(--main-font);
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 5px;
+}
+
+/* Footer */
+footer {
+  padding: 20px;
+  background: var(--bg-color);
+  border-top: var(--glass-border);
+  text-align: center;
+  scroll-snap-align: end;
+}
+
+footer a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.footer-info {
+  font-family: var(--main-font);
+  font-size: 0.8rem;
+  color: #fff;
+}
+
+.visitor-count {
+  color: red;
+  font-weight: bold;
+}
+
+/* Media Queries */
+@media (max-width: 991px) {
+  .nama {
+    font-size: 3rem;
+  }
+
+  .proj {
+    font-size: 2.5rem;
+  }
+}

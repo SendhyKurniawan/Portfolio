@@ -2,7 +2,7 @@ const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
 document.body.appendChild(canvas);
 
-canvas.style.position = "fixed";
+canvas.style.position = "absolute";
 canvas.style.top = "0";
 canvas.style.left = "0";
 canvas.style.width = "100%";
@@ -23,15 +23,22 @@ let mouse = {
 };
 
 window.addEventListener("mousemove", (e) => {
-  mouse.x = e.x;
-  mouse.y = e.y;
+  mouse.x = e.pageX;
+  mouse.y = e.pageY;
 });
 
 window.addEventListener("resize", resize);
 
 function resize() {
   width = canvas.width = window.innerWidth;
-  height = canvas.height = window.innerHeight;
+  height = canvas.height = Math.max(
+    document.body.scrollHeight,
+    document.documentElement.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.offsetHeight,
+    document.body.clientHeight,
+    document.documentElement.clientHeight
+  );
   createParticles();
 }
 

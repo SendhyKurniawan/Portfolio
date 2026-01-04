@@ -8,4 +8,25 @@ services:
       - .:/var/www/html
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
+    depends_on:
+      - db
+    links:
+      - db
     restart: always
+
+  db:
+    image: mysql:8.0
+    container_name: portfolio_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: portfolio_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql
+    ports:
+      - "3388:3306"
+
+volumes:
+  db_data:
