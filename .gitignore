@@ -3,4 +3,7 @@
 
 # Admin uploads (runtime content)
 uploads/
-img/uploads/
+
+# Composer / PHPUnit
+vendor/
+.phpunit.cache/

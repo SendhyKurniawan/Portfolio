@@ -12,9 +12,14 @@ canvas.style.pointerEvents = "none";
 
 let width, height;
 let particles = [];
-const particleCount = 100;
 const connectionDistance = 150;
 const mouseRange = 200;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Line drawing is O(n^2), so scale the particle count with screen width
+function particleCount() {
+  return Math.min(100, Math.max(30, Math.floor(window.innerWidth / 15)));
+}
 
 // Mouse tracking
 let mouse = {
@@ -27,7 +32,11 @@ window.addEventListener("mousemove", (e) => {
   mouse.y = e.pageY;
 });
 
-window.addEventListener("resize", resize);
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(resize, 200);
+});
 
 function resize() {
   width = canvas.width = window.innerWidth;
@@ -40,6 +49,8 @@ function resize() {
     document.documentElement.clientHeight
   );
   createParticles();
+  // Resizing clears the canvas; with no animation loop, redraw the static frame
+  if (reduceMotion) drawFrame();
 }
 
 class Particle {
@@ -94,13 +105,10 @@ class Particle {
 }
 
 function createParticles() {
-  particles = [];
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
-  }
+  particles = Array.from({ length: particleCount() }, () => new Particle());
 }
 
-function animate() {
+function drawFrame() {
   ctx.clearRect(0, 0, width, height);
 
   // Draw connecting lines
@@ -123,12 +131,32 @@ function animate() {
   }
 
   particles.forEach((particle) => {
-    particle.update();
+    if (!reduceMotion) particle.update();
     particle.draw();
   });
+}
 
+// Stop the loop while the tab is hidden; `running` prevents a second loop on return
+let running = false;
+
+function animate() {
+  drawFrame();
+  if (document.hidden) {
+    running = false;
+    return;
+  }
   requestAnimationFrame(animate);
 }
 
+function start() {
+  if (running || reduceMotion) return;
+  running = true;
+  requestAnimationFrame(animate);
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) start();
+});
+
 resize();
-animate();
+start();

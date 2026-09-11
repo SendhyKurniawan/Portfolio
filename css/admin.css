@@ -1,0 +1,99 @@
+/* Shared Win98-style chrome for admin/ pages */
+.admin-window {
+  background: #c0c0c0;
+  border: 2px outset #fff;
+  box-shadow: 8px 8px 0 #000;
+  margin-bottom: 30px;
+}
+
+.admin-window--form {
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+.window-header {
+  background: linear-gradient(90deg, navy, #1084d0);
+  color: white;
+  padding: 5px 10px;
+  font-family: var(--main-font);
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.window-body {
+  padding: 20px;
+}
+
+.retro-table {
+  width: 100%;
+  background: #fff;
+  border: 2px inset #dfdfdf;
+}
+
+.retro-table th {
+  background: #d0d0d0;
+  border-bottom: 1px solid #000;
+  padding: 8px;
+  font-family: var(--header-font);
+  font-size: 0.8rem;
+}
+
+.retro-table td {
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  font-family: var(--main-font);
+  color: #000;
+  vertical-align: top;
+}
+
+.retro-table .message-cell {
+  max-width: 480px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.btn-retro {
+  background: #c0c0c0;
+  border: 2px outset #fff;
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn-retro:active {
+  border: 2px inset #fff;
+}
+
+.btn-retro:focus-visible {
+  outline: 2px dotted #000;
+  outline-offset: 2px;
+}
+
+.inline-form {
+  display: inline;
+}
+
+.form-errors {
+  background: #fff;
+  border: 2px solid #c00;
+  color: #c00;
+  padding: 8px 12px;
+  margin-bottom: 15px;
+  font-family: var(--main-font);
+}
+
+.form-errors ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.empty-row {
+  color: #555;
+  text-align: center;
+}

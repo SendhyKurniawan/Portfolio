@@ -1,26 +1,24 @@
 FROM php:8.2-apache
 
-# Enable mod_rewrite
-RUN a2enmod rewrite
+# Enable mod_rewrite and mod_headers
+RUN a2enmod rewrite headers
 
 # Install mysqli and pdo_mysql
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Never serve dotfiles/dirs (.env, .git) from the mounted web root
-RUN printf '%s\n' \
-      '<DirectoryMatch "/\.">' '    Require all denied' '</DirectoryMatch>' \
-      '<FilesMatch "^\.">' '    Require all denied' '</FilesMatch>' \
-      > /etc/apache2/conf-available/deny-dotfiles.conf \
-    && a2enconf deny-dotfiles
+# Access rules and security headers (dotfiles, internals, uploads)
+COPY docker/apache/portfolio.conf /etc/apache2/conf-available/portfolio.conf
+RUN a2enconf portfolio
+
+# Production-safe PHP settings (errors hidden, upload size, sessions)
+COPY docker/php/portfolio.ini /usr/local/etc/php/conf.d/portfolio.ini
 
 # Copy project files
 COPY . /var/www/html/
 
-# Create necessary directories and set permissions
-RUN mkdir -p /var/www/html/data \
-    && mkdir -p /var/www/html/img/uploads \
-    && chown -R www-data:www-data /var/www/html/data \
-    && chown -R www-data:www-data /var/www/html/img/uploads
+# Admin image uploads land here
+RUN mkdir -p /var/www/html/uploads \
+    && chown -R www-data:www-data /var/www/html/uploads
 
 # Expose port 80
 EXPOSE 80

@@ -30,18 +30,26 @@
 
 /* Sidebar (Connections) */
 .connection-card {
+  display: block;
   background: #fff;
   border: 1px solid #ccc;
   padding: 5px;
   text-align: center;
   margin-bottom: 10px;
   cursor: pointer;
+  text-decoration: none;
   transition: transform 0.2s;
 }
 
-.connection-card:hover {
+.connection-card:hover,
+.connection-card:focus-visible {
   transform: scale(1.05);
   border-color: #6d84b4;
+}
+
+.connection-card:focus-visible {
+  outline: 2px solid #6d84b4;
+  outline-offset: 2px;
 }
 
 .connection-img {
@@ -50,6 +58,11 @@
   object-fit: cover;
   background: #000;
   margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 2rem;
 }
 
 .connection-name {
@@ -135,4 +148,53 @@
 
 .guestbook-submit:hover {
   background: #5d74a4;
+}
+
+.guestbook-submit:focus-visible {
+  outline: 2px solid #3b5998;
+  outline-offset: 2px;
+}
+
+.guestbook-label {
+  display: block;
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #2b5d9c;
+  margin-bottom: 2px;
+}
+
+.guestbook-note {
+  font-family: Arial, sans-serif;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.guestbook-flash {
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+  border: 1px solid;
+}
+
+.guestbook-flash--success {
+  background: #e8f5e0;
+  border-color: #6a9f4d;
+  color: #2f5d17;
+}
+
+.guestbook-flash--error {
+  background: #fbe9e7;
+  border-color: #d14836;
+  color: #a1281a;
+}
+
+/* Honeypot: off-screen instead of display:none so naive bots still fill it */
+.guestbook-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }

@@ -20,8 +20,28 @@
 }
 
 html {
-  scroll-snap-type: y mandatory;
+  /* proximity, not mandatory: sections taller than the viewport stay scrollable */
+  scroll-snap-type: y proximity;
   scroll-padding-top: 80px; /* Offset for navbar */
+}
+
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2000;
+  background: #c0c0c0;
+  color: #000;
+  border: 2px outset #fff;
+  padding: 4px 10px;
+  font-family: var(--main-font);
+}
+
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible {
+  outline: 2px dashed var(--accent-color);
+  outline-offset: 3px;
 }
 
 body {
@@ -94,8 +114,20 @@ p {
   line-height: 1.6;
 }
 
-/* Marquee Bar */
+/* Section headings: pixel font is wide, so scale down on phones instead of overflowing */
+.nama.section-title {
+  font-size: clamp(1.2rem, 6.5vw, 3rem);
+  overflow-wrap: anywhere;
+}
+
+/* The hero is the top of the page; snapping to it would hide the marquee under the navbar */
+#home {
+  scroll-snap-align: none;
+}
+
+/* Marquee Bar (sits below the fixed 60px navbar) */
 .marquee-container {
+  margin-top: 60px;
   background: black;
   border-bottom: 2px solid #fff;
   color: lime;
@@ -103,6 +135,43 @@ p {
   overflow: hidden;
   white-space: nowrap;
   padding: 5px;
+}
+
+/* Two identical copies scroll by half their width for a seamless loop */
+.marquee-track {
+  display: inline-flex;
+  animation: marquee-scroll 40s linear infinite;
+}
+
+.marquee-container:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .marquee-track {
+    animation: none;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .marquee-track span[aria-hidden="true"] {
+    display: none;
+  }
 }
 
 /* Footer */

@@ -15,7 +15,12 @@ if (blogModal) {
 
     if (modalTitle) modalTitle.textContent = title;
     if (modalDate) modalDate.textContent = '> TIMESTAMP: ' + date;
-    if (modalImage) modalImage.src = image;
+    if (modalImage) {
+      // Posts without an image should not show an empty 300px box
+      modalImage.hidden = !image;
+      if (image) modalImage.src = image;
+      else modalImage.removeAttribute('src');
+    }
     if (modalContent) modalContent.textContent = content;
   });
 }

@@ -1,51 +1,34 @@
-// Subtitle Glitch Logic
-const heroSubtitle = document.querySelector('.hero-subtitle');
-const subtitleTexts = [
-  "[ ARCHITECTING DIGITAL EXPERIENCES ]", 
-  "[ CREATIVE DEVELOPER ]", 
-  "[ SYSTEM ARCHITECT ]", 
+// Hero text rotation with a glitch burst on each swap.
+// Skipped entirely for visitors who prefer reduced motion.
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function rotateText(element, texts, intervalMs) {
+  if (!element || prefersReducedMotion) return;
+  let index = 0;
+
+  setInterval(() => {
+    if (document.hidden) return;
+
+    element.style.animation = 'none';
+    void element.offsetWidth; // restart the CSS animation
+
+    index = (index + 1) % texts.length;
+    element.setAttribute('data-text', texts[index]);
+    element.textContent = texts[index];
+
+    element.style.animation = 'glitch-anim-1 0.5s infinite';
+    setTimeout(() => {
+      element.style.animation = 'glitch-anim-1 3s infinite linear alternate-reverse';
+    }, 500);
+  }, intervalMs);
+}
+
+rotateText(document.querySelector('.hero-subtitle'), [
+  "[ ARCHITECTING DIGITAL EXPERIENCES ]",
+  "[ CREATIVE DEVELOPER ]",
+  "[ SYSTEM ARCHITECT ]",
   "[ FULL STACK ENGINEER ]"
-];
-let subtitleIndex = 0;
+], 4000);
 
-setInterval(() => {
-  if (!heroSubtitle) return;
-  
-  heroSubtitle.style.animation = 'none';
-  void heroSubtitle.offsetWidth; 
-  
-  subtitleIndex = (subtitleIndex + 1) % subtitleTexts.length;
-  const newSubtitle = subtitleTexts[subtitleIndex];
-  
-  heroSubtitle.setAttribute('data-text', newSubtitle);
-  heroSubtitle.textContent = newSubtitle;
-  
-  heroSubtitle.style.animation = 'glitch-anim-1 0.5s infinite';
-  setTimeout(() => {
-     heroSubtitle.style.animation = 'glitch-anim-1 3s infinite linear alternate-reverse';
-  }, 500);
-}, 4000);
-
-// Title Swapping Logic (KURNIAWAN SENDHY <-> KURSE.CO)
-const heroTitle = document.querySelector('.hero-title');
-const titleTexts = ["KURNIAWAN SENDHY", "KURSE.CO"];
-let titleIndex = 0;
-
-setInterval(() => {
-  if (!heroTitle) return;
-
-  heroTitle.style.animation = 'none';
-  void heroTitle.offsetWidth; 
-
-  titleIndex = (titleIndex + 1) % titleTexts.length;
-  const newTitle = titleTexts[titleIndex];
-
-  heroTitle.setAttribute('data-text', newTitle);
-  heroTitle.textContent = newTitle;
-
-  // Sync glitch with text change
-  heroTitle.style.animation = 'glitch-anim-1 0.5s infinite';
-  setTimeout(() => {
-     heroTitle.style.animation = 'glitch-anim-1 3s infinite linear alternate-reverse';
-  }, 500);
-}, 5000); // Swap every 5 seconds
+// KURNIAWAN SENDHY <-> KURSE.CO
+rotateText(document.querySelector('.hero-title'), ["KURNIAWAN SENDHY", "KURSE.CO"], 5000);

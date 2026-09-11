@@ -1,18 +1,16 @@
 <?php
-session_start();
-if (!isset($_SESSION['admin_logged_in'])) {
-    header('Location: login.php');
-    exit;
-}
+require_once '../lib/app.php';
+require_admin();
 require_once '../config/db.php';
 
-$id = isset($_GET['id']) ? $_GET['id'] : null;
+$id = filter_var($_GET['id'] ?? '', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) ?: null;
 $blog = [
     'title' => '',
     'content' => '',
     'image' => '',
     'date' => date('Y-m-d')
 ];
+$errors = [];
 
 if ($id && $pdo) {
     $stmt = $pdo->prepare("SELECT * FROM blogs WHERE id = ?");
@@ -22,107 +20,109 @@ if ($id && $pdo) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $pdo) {
-    $title = $_POST['title'];
-    $content = $_POST['content'];
-    $date = $_POST['date'];
-    
-    // Image Handling
-    $image_path = $blog['image'];
-    
-    // Check if "Remove Image" is selected
-    if (isset($_POST['remove_image'])) {
-        $image_path = '';
+    require_csrf();
+
+    $values = [
+        'title' => trim(post_string('title')),
+        'content' => trim(post_string('content')),
+        'date' => trim(post_string('date')),
+    ];
+    $errors = validate_lengths($values, [
+        'title' => ['label' => 'Title', 'max' => 255],
+        'content' => ['label' => 'Content', 'max' => 60000],
+        'date' => ['label' => 'Date', 'max' => 10],
+    ]);
+    if (!isset($errors['date']) && !is_valid_date($values['date'])) {
+        $errors['date'] = 'Date must be a valid YYYY-MM-DD date.';
     }
 
-    // Check if new file uploaded
-    if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = '../uploads/';
-        if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
-        
-        $fileName = time() . '_' . basename($_FILES['image_file']['name']);
-        $targetPath = $uploadDir . $fileName;
-        
-        if (move_uploaded_file($_FILES['image_file']['tmp_name'], $targetPath)) {
-            $image_path = 'uploads/' . $fileName;
+    $upload = $errors ? ['path' => null, 'error' => null] : store_image_upload($_FILES['image_file'] ?? [], UPLOAD_DIR);
+    if ($upload['error']) {
+        $errors['image'] = $upload['error'];
+    }
+    $image = resolve_image_choice($blog['image'] ?? '', isset($_POST['remove_image']), post_string('image_url'), $upload['path']);
+    if ($image['error']) {
+        $errors['image'] = $image['error'];
+    }
+
+    if (!$errors) {
+        try {
+            if ($id) {
+                $stmt = $pdo->prepare("UPDATE blogs SET title=?, content=?, image=?, date=? WHERE id=?");
+                $stmt->execute([$values['title'], $values['content'], $image['path'], $values['date'], $id]);
+            } else {
+                $stmt = $pdo->prepare("INSERT INTO blogs (title, content, image, date) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$values['title'], $values['content'], $image['path'], $values['date']]);
+            }
+            if ($image['path'] !== ($blog['image'] ?? '')) {
+                delete_stored_upload($blog['image'] ?? '', UPLOAD_DIR);
+            }
+            header('Location: dashboard.php');
+            exit;
+        } catch (PDOException $e) {
+            error_log('Blog save failed: ' . $e->getMessage());
+            $errors['db'] = 'Could not save the log entry. Please try again.';
         }
-    } 
-    // Fallback to URL input
-    elseif (!empty($_POST['image_url']) && !isset($_POST['remove_image']) && empty($_FILES['image_file']['name'])) {
-        $image_path = $_POST['image_url'];
     }
 
-    if ($id) {
-        $stmt = $pdo->prepare("UPDATE blogs SET title=?, content=?, image=?, date=? WHERE id=?");
-        $stmt->execute([$title, $content, $image_path, $date, $id]);
-    } else {
-        $stmt = $pdo->prepare("INSERT INTO blogs (title, content, image, date) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$title, $content, $image_path, $date]);
+    // Re-showing the form after a failed save: drop the image uploaded in this request
+    if ($upload['path']) {
+        delete_stored_upload($upload['path'], UPLOAD_DIR);
     }
-    header('Location: dashboard.php');
-    exit;
+    $blog = array_merge($blog, $values);
 }
+$currentImage = $blog['image'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $id ? 'Edit' : 'Add'; ?> Blog - KURSE CO.</title>
+    <meta name="robots" content="noindex">
+    <title><?= $id ? 'Edit' : 'Add' ?> Blog - KURSE CO.</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
-    <style>
-        .admin-window {
-            max-width: 600px;
-            margin: 50px auto;
-            background: #c0c0c0;
-            border: 2px outset #fff;
-            box-shadow: 8px 8px 0 #000;
-        }
-        .window-header {
-            background: linear-gradient(90deg, navy, #1084d0);
-            color: white;
-            padding: 5px 10px;
-            font-family: var(--main-font);
-            font-weight: bold;
-        }
-        .window-body {
-            padding: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
-    <div class="admin-window">
-        <div class="window-header"><?php echo $id ? 'EDIT_LOG.EXE' : 'NEW_LOG.EXE'; ?></div>
+    <div class="admin-window admin-window--form">
+        <div class="window-header"><?= $id ? 'EDIT_LOG.EXE' : 'NEW_LOG.EXE' ?></div>
         <div class="window-body">
+            <?php if ($errors): ?>
+                <div class="form-errors" role="alert">
+                    <ul><?php foreach ($errors as $message): ?><li><?= e($message) ?></li><?php endforeach; ?></ul>
+                </div>
+            <?php endif; ?>
             <form method="POST" enctype="multipart/form-data">
+                <?= csrf_field() ?>
                 <div class="mb-3">
-                    <label class="form-label text-dark fw-bold">Title</label>
-                    <input type="text" name="title" class="form-control rounded-0" value="<?php echo htmlspecialchars($blog['title']); ?>" required>
+                    <label for="title" class="form-label text-dark fw-bold">Title</label>
+                    <input type="text" id="title" name="title" maxlength="255" class="form-control rounded-0" value="<?= e($blog['title']) ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label text-dark fw-bold">Date</label>
-                    <input type="date" name="date" class="form-control rounded-0" value="<?php echo htmlspecialchars($blog['date']); ?>" required>
+                    <label for="date" class="form-label text-dark fw-bold">Date</label>
+                    <input type="date" id="date" name="date" class="form-control rounded-0" value="<?= e($blog['date']) ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label text-dark fw-bold">Content</label>
-                    <textarea name="content" class="form-control rounded-0" rows="6" required><?php echo htmlspecialchars($blog['content']); ?></textarea>
+                    <label for="content" class="form-label text-dark fw-bold">Content</label>
+                    <textarea id="content" name="content" class="form-control rounded-0" rows="6" required><?= e($blog['content']) ?></textarea>
                 </div>
-                
+
                 <div class="mb-3 p-2 bg-white border">
-                    <label class="form-label text-dark fw-bold">Image</label>
-                    <?php if (!empty($blog['image'])): ?>
+                    <span class="form-label text-dark fw-bold d-block">Image</span>
+                    <?php if ($currentImage !== ''): ?>
                         <div class="mb-2">
-                            <img src="../<?php echo htmlspecialchars($blog['image']); ?>" style="height: 100px; object-fit: cover; border: 1px solid #000;">
+                            <img src="<?= e(is_http_url($currentImage) ? $currentImage : '../' . $currentImage) ?>" alt="Current log image" style="height: 100px; object-fit: cover; border: 1px solid #000;">
                             <br>
                             <input type="checkbox" name="remove_image" id="remove_image"> <label for="remove_image" class="text-danger small">Remove Image</label>
                         </div>
                     <?php endif; ?>
-                    
-                    <label class="small text-muted">Upload New Image</label>
-                    <input type="file" name="image_file" class="form-control rounded-0 mb-2">
-                    
-                    <label class="small text-muted">OR Image URL</label>
-                    <input type="text" name="image_url" class="form-control rounded-0" placeholder="https://..." value="<?php echo filter_var($blog['image'], FILTER_VALIDATE_URL) ? htmlspecialchars($blog['image']) : ''; ?>">
+
+                    <label for="image_file" class="small text-muted">Upload New Image (JPG, PNG, GIF or WebP, max 5 MB)</label>
+                    <input type="file" id="image_file" name="image_file" accept="image/jpeg,image/png,image/gif,image/webp" class="form-control rounded-0 mb-2">
+
+                    <label for="image_url" class="small text-muted">OR Image URL</label>
+                    <input type="url" id="image_url" name="image_url" class="form-control rounded-0" placeholder="https://..." value="<?= is_http_url($currentImage) ? e($currentImage) : '' ?>">
                 </div>
 
                 <div class="d-flex justify-content-between">
