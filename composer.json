@@ -1,0 +1,22 @@
+{
+    "name": "sendhykurniawan/portfolio",
+    "description": "Y2K-style PHP portfolio site",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "config": {
+        "platform": {
+            "php": "8.2.0"
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit",
+        "smoke": "php tests/smoke.php"
+    }
+}
