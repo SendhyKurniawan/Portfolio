@@ -137,7 +137,7 @@ check('old input is kept after error', strpos($page, 'value="not-an-email"') !==
 
 $xssName = '<script>alert(1)</script>Tester';
 http('POST', $base . '/', ['csrf_token' => $token, 'nama' => $xssName, 'email' => 'guest@smoke.test', 'pesan' => "Hello & <b>bye</b>"], $jar);
-check('valid message shows success', strpos(http('GET', $base . '/', [], $jar)['body'], 'Message transmitted successfully!') !== false);
+check('valid message shows success', strpos(http('GET', $base . '/', [], $jar)['body'], 'Signed. Thanks for your message!') !== false);
 $row = $pdo->query("SELECT name, message FROM guestbook WHERE email='guest@smoke.test'")->fetch(PDO::FETCH_ASSOC);
 check('message stored raw (no double-encoding)', $row && $row['name'] === $xssName && $row['message'] === 'Hello & <b>bye</b>');
 

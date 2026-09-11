@@ -1,156 +1,385 @@
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Michroma&family=VT323&display=swap");
 
+/* KURSE CO. Millennium Edition
+   Pearl ground, translucent iMac-G3 plastic, liquid chrome, Nokia LCD readouts. */
 :root {
-  --bg-color: #000000;
-  --card-bg: rgba(0, 0, 50, 0.8);
-  --primary-color: #ff00ff; /* Hot Pink */
-  --secondary-color: #00ff00; /* Lime Green */
-  --accent-color: #00ffff; /* Cyan */
-  --text-color: #e0e0e0;
-  --text-muted: #a0a0a0;
-  --glass-border: 2px solid #c0c0c0;
-  --glow: 0 0 5px #ff00ff;
-  --main-font: "VT323", monospace;
-  --header-font: "Press Start 2P", cursive;
+  --pearl: #eef1f8;
+  --ink: #16213e;
+  --ink-soft: #46526f;
+  --bondi: #007591;
+  --bondi-hi: #4cc3df;
+  --bondi-lo: #005a70;
+  --tangerine: #ff8a1f;
+  --tangerine-hi: #ffc07a;
+  --chrome: #c9d2e0;
+  --lcd: #c3cfa8;
+  --lcd-ink: #26301a;
+  --lilac: #cbbdf6;
+  --ice: #bfe6f6;
+  --mint: #c9f2df;
+
+  --display-font: "Michroma", "Eurostile", "Arial Black", sans-serif;
+  --body-font: Verdana, Tahoma, "DejaVu Sans", sans-serif;
+  --ui-font: Tahoma, Verdana, "DejaVu Sans", sans-serif;
+  --lcd-font: "VT323", "Courier New", monospace;
+  /* Kept for admin/ pages that still reference the old names */
+  --main-font: var(--ui-font);
+  --header-font: var(--display-font);
+
+  --radius-window: 16px;
+  --radius-chip: 6px;
+  --shadow-window: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 0 0 1px rgba(22, 33, 62, 0.14),
+    0 18px 40px -18px rgba(22, 33, 62, 0.45);
+  --nav-height: 64px;
 }
 
-* {
-  scroll-behavior: smooth;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
-  /* proximity, not mandatory: sections taller than the viewport stay scrollable */
-  scroll-snap-type: y proximity;
-  scroll-padding-top: 80px; /* Offset for navbar */
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-height) + 24px);
+}
+
+body {
+  margin: 0;
+  background: var(--pearl);
+  color: var(--ink);
+  font-family: var(--body-font);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Holographic foil ground: fixed so it shimmers against the scrolling plastic */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(55vmax 45vmax at 8% 6%, rgba(203, 189, 246, 0.75), transparent 62%),
+    radial-gradient(45vmax 40vmax at 92% 18%, rgba(191, 230, 246, 0.8), transparent 60%),
+    radial-gradient(50vmax 45vmax at 78% 96%, rgba(201, 242, 223, 0.75), transparent 62%),
+    radial-gradient(40vmax 35vmax at 10% 90%, rgba(255, 214, 236, 0.55), transparent 60%),
+    var(--pearl);
+}
+
+/* 16px side gutters (Bootstrap's default is 12px) */
+.container {
+  --bs-gutter-x: 2rem;
+}
+
+p {
+  color: var(--ink-soft);
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--bondi);
+}
+
+a:hover {
+  color: var(--bondi-lo);
+}
+
+:focus-visible {
+  outline: 3px solid var(--tangerine);
+  outline-offset: 3px;
 }
 
 .skip-link {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 10px;
+  left: 10px;
   z-index: 2000;
-  background: #c0c0c0;
-  color: #000;
-  border: 2px outset #fff;
-  padding: 4px 10px;
-  font-family: var(--main-font);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-family: var(--ui-font);
+  box-shadow: var(--shadow-window);
 }
 
-a:focus-visible,
-button:focus-visible,
-.btn:focus-visible {
-  outline: 2px dashed var(--accent-color);
-  outline-offset: 3px;
-}
+/* ---------- Type ---------- */
 
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: var(--main-font);
-  font-size: 1.2rem;
-  overflow-x: hidden;
+/* Section headings and the admin h1: wide techno caps from a 2000 product launch */
+.nama,
+.section-title {
+  font-family: var(--display-font);
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
   margin: 0;
-  position: relative;
-  cursor: crosshair;
 }
 
-/* Background Starry/Grid Effect */
-body::before {
+.nama.section-title {
+  font-size: clamp(1.35rem, 1rem + 2.2vw, 2.25rem);
+}
+
+.section-intro {
+  max-width: 60ch;
+  margin: 0.6rem 0 0;
+}
+
+.section-head {
+  margin-bottom: 2rem;
+}
+
+.site-section {
+  padding-block: clamp(2rem, 1rem + 3vw, 4rem);
+}
+
+/* ---------- Plastic window (projects, inbox, guestbook, modal) ---------- */
+
+.window {
+  position: relative;
+  background: rgba(255, 255, 255, 0.58);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-window);
+  box-shadow: var(--shadow-window);
+  overflow: hidden;
+}
+
+/* Gel title bar in Bondi blue, with the glossy top half every 2000 UI had */
+.window-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  padding: 6px 14px;
+  background: linear-gradient(180deg, var(--bondi-hi) 0%, var(--bondi) 52%, var(--bondi-lo) 100%);
+  color: #fff;
+  font-family: var(--ui-font);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 1px rgba(0, 40, 55, 0.6);
+}
+
+.window-bar::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px),
-    radial-gradient(white 1px, transparent 1px);
-  background-size: 40px 40px, 40px 40px, 100px 100px;
-  background-position: 0 0, 0 0, 20px 20px;
-  z-index: -2;
+  inset: 2px 8px 50% 8px;
+  border-radius: 12px 12px 50% 50% / 12px 12px 8px 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.08));
   pointer-events: none;
 }
 
-/* Scrollbar */
-/* Scrollbar - Y2K Style */
-::-webkit-scrollbar {
-  width: 16px;
-  height: 16px;
-  background: #c0c0c0;
-}
-
-::-webkit-scrollbar-track {
-  background: #e0e0e0;
-  border-left: 1px solid #c0c0c0;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #c0c0c0;
-  border-top: 2px solid #fff;
-  border-left: 2px solid #fff;
-  border-right: 2px solid #404040;
-  border-bottom: 2px solid #404040;
-  box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
-  border-radius: 0;
-}
-
-::-webkit-scrollbar-thumb:active {
-  border-top: 2px solid #404040;
-  border-left: 2px solid #404040;
-  border-right: 2px solid #fff;
-  border-bottom: 2px solid #fff;
-  box-shadow: none;
-}
-
-::-webkit-scrollbar-corner {
-  background: #c0c0c0;
-}
-
-p {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  line-height: 1.6;
-}
-
-/* Section headings: pixel font is wide, so scale down on phones instead of overflowing */
-.nama.section-title {
-  font-size: clamp(1.2rem, 6.5vw, 3rem);
-  overflow-wrap: anywhere;
-}
-
-/* The hero is the top of the page; snapping to it would hide the marquee under the navbar */
-#home {
-  scroll-snap-align: none;
-}
-
-/* Marquee Bar (sits below the fixed 60px navbar) */
-.marquee-container {
-  margin-top: 60px;
-  background: black;
-  border-bottom: 2px solid #fff;
-  color: lime;
-  font-family: var(--main-font);
+.window-title {
+  position: relative;
   overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 5px;
 }
 
-/* Two identical copies scroll by half their width for a seamless loop */
-.marquee-track {
+/* Candy gel dots in the iMac flavours; decorative, like every skin of the era */
+.gel-dots {
+  position: relative;
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.gel-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.25), inset 0 2px 2px rgba(255, 255, 255, 0.8),
+    0 0 0 1px rgba(0, 0, 0, 0.18);
+}
+
+.gel-dots span:nth-child(1) { background: #ff7a6b; }
+.gel-dots span:nth-child(2) { background: #ffc94a; }
+.gel-dots span:nth-child(3) { background: #7ddc6f; }
+
+.window-body {
+  padding: 1.25rem;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn-gel {
+  --gel-hi: var(--bondi-hi);
+  --gel: var(--bondi);
+  --gel-lo: var(--bondi-lo);
+  --gel-text: #fff;
+  position: relative;
   display: inline-flex;
-  animation: marquee-scroll 40s linear infinite;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 44px;
+  padding: 0.55rem 1.4rem;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--gel-hi) 0%, var(--gel) 55%, var(--gel-lo) 100%);
+  color: var(--gel-text);
+  font-family: var(--ui-font);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 6px 14px -6px rgba(22, 33, 62, 0.55);
+  cursor: pointer;
+  transition: transform 120ms ease, filter 120ms ease;
 }
 
-.marquee-container:hover .marquee-track {
-  animation-play-state: paused;
+.btn-gel::before {
+  content: "";
+  position: absolute;
+  inset: 2px 12% 52% 12%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.05));
+  pointer-events: none;
 }
 
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+.btn-gel:hover {
+  color: var(--gel-text);
+  filter: brightness(1.08) saturate(1.1);
 }
+
+.btn-gel:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.35);
+}
+
+.btn-gel--tangerine {
+  --gel-hi: var(--tangerine-hi);
+  --gel: var(--tangerine);
+  --gel-lo: #e06a00;
+  --gel-text: var(--ink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.btn-gel--chrome {
+  --gel-hi: #ffffff;
+  --gel: #dfe5ee;
+  --gel-lo: #aab5c6;
+  --gel-text: var(--ink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.btn-gel--small {
+  min-height: 34px;
+  padding: 0.3rem 1rem;
+  font-size: 0.8125rem;
+}
+
+/* ---------- Form fields (guestbook, admin) ---------- */
+
+.field-label {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--ui-font);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.field-hint {
+  font-family: var(--ui-font);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.field {
+  display: block;
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(22, 33, 62, 0.28);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: inset 0 2px 3px rgba(22, 33, 62, 0.12);
+  color: var(--ink);
+  font-family: var(--body-font);
+  font-size: 1rem;
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--bondi);
+  box-shadow: inset 0 2px 3px rgba(22, 33, 62, 0.12), 0 0 0 3px rgba(76, 195, 223, 0.45);
+}
+
+textarea.field {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.field::file-selector-button {
+  margin-right: 0.75rem;
+  padding: 0.3rem 1rem;
+  border: 1px solid rgba(22, 33, 62, 0.22);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffffff, #dfe5ee 55%, #aab5c6);
+  color: var(--ink);
+  font-family: var(--ui-font);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ---------- LCD readout (ticker, hit counter) ---------- */
+
+.lcd {
+  background: linear-gradient(180deg, #b8c49b, var(--lcd) 30%, #cdd8b4);
+  color: var(--lcd-ink);
+  font-family: var(--lcd-font);
+  font-size: 1.25rem;
+  line-height: 1;
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(38, 48, 26, 0.35), 0 1px 0 rgba(255, 255, 255, 0.9);
+  text-shadow: 1px 1px 0 rgba(38, 48, 26, 0.15);
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  margin-top: 2rem;
+  padding: 1.5rem 1rem 2rem;
+  background: linear-gradient(180deg, #f7f9fc, var(--chrome));
+  border-top: 1px solid #fff;
+  box-shadow: 0 -1px 0 rgba(22, 33, 62, 0.15);
+  font-family: var(--ui-font);
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.site-footer .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.hit-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 4px 10px;
+}
+
+.hit-counter-digits {
+  letter-spacing: 0.12em;
+  font-size: 1.5rem;
+}
+
+/* ---------- Motion preferences ---------- */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -160,52 +389,5 @@ p {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-
-  .marquee-track {
-    animation: none;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .marquee-track span[aria-hidden="true"] {
-    display: none;
-  }
-}
-
-/* Footer */
-footer {
-  padding: 20px;
-  background: var(--bg-color);
-  border-top: var(--glass-border);
-  text-align: center;
-  scroll-snap-align: end;
-}
-
-footer a {
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-.footer-info {
-  font-family: var(--main-font);
-  font-size: 0.8rem;
-  color: #fff;
-}
-
-.visitor-count {
-  color: red;
-  font-weight: bold;
-}
-
-/* Media Queries */
-@media (max-width: 991px) {
-  .nama {
-    font-size: 3rem;
-  }
-
-  .proj {
-    font-size: 2.5rem;
   }
 }

@@ -1,51 +1,103 @@
-/* Shared Win98-style chrome for admin/ pages */
-.admin-window {
-  background: #c0c0c0;
-  border: 2px outset #fff;
-  box-shadow: 8px 8px 0 #000;
-  margin-bottom: 30px;
+/* ---------- Admin pages: the same plastic windows, arranged as a control panel ---------- */
+
+.admin-body {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-block: clamp(1.5rem, 1rem + 2vw, 3rem);
+  padding-inline: 16px;
 }
 
-.admin-window--form {
-  max-width: 600px;
-  margin: 50px auto;
-}
-
-.window-header {
-  background: linear-gradient(90deg, navy, #1084d0);
-  color: white;
-  padding: 5px 10px;
-  font-family: var(--main-font);
-  font-weight: bold;
+.admin-top {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-.window-body {
-  padding: 20px;
+.admin-title {
+  font-size: clamp(1.35rem, 1rem + 1.6vw, 2rem);
 }
+
+.admin-window {
+  margin-bottom: 2rem;
+}
+
+/* Tables sit flush in the window, like the inbox on the public page */
+.admin-window .window-body {
+  padding: 0;
+}
+
+.admin-window .window-bar {
+  flex-wrap: wrap;
+}
+
+.admin-form-title {
+  margin: 0;
+  font-family: var(--ui-font);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: inherit;
+}
+
+.window-bar h2.window-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: inherit;
+}
+
+.bar-count {
+  position: relative;
+  margin-left: auto;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.bar-action {
+  margin-left: auto;
+  text-shadow: none;
+}
+
+/* ---------- Tables ---------- */
 
 .retro-table {
   width: 100%;
-  background: #fff;
-  border: 2px inset #dfdfdf;
+  border-collapse: collapse;
+  font-family: var(--ui-font);
+  font-size: 0.875rem;
+  color: var(--ink);
 }
 
 .retro-table th {
-  background: #d0d0d0;
-  border-bottom: 1px solid #000;
-  padding: 8px;
-  font-family: var(--header-font);
-  font-size: 0.8rem;
+  padding: 8px 1.25rem;
+  background: linear-gradient(180deg, #fbfcfe, #e2e8f1);
+  border-bottom: 1px solid rgba(22, 33, 62, 0.15);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-align: left;
+  white-space: nowrap;
 }
 
 .retro-table td {
-  padding: 8px;
-  border-bottom: 1px solid #ccc;
-  font-family: var(--main-font);
-  color: #000;
+  padding: 10px 1.25rem;
+  border-bottom: 1px solid rgba(22, 33, 62, 0.08);
   vertical-align: top;
+}
+
+.retro-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.retro-table tbody tr:hover td {
+  background: rgba(76, 195, 223, 0.1);
+}
+
+.retro-table td:last-child {
+  white-space: nowrap;
+  text-align: right;
 }
 
 .retro-table .message-cell {
@@ -54,38 +106,66 @@
   word-break: break-word;
 }
 
+.empty-row {
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.retro-table td.empty-row {
+  padding-block: 1.5rem;
+  text-align: center;
+}
+
+/* Compact icon buttons (edit / delete): small chrome gel pills */
 .btn-retro {
-  background: #c0c0c0;
-  border: 2px outset #fff;
-  color: #000;
-  font-weight: bold;
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid rgba(22, 33, 62, 0.22);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffffff, #dfe5ee 55%, #aab5c6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 3px 8px -4px rgba(22, 33, 62, 0.5);
+  color: var(--ink);
+  font-size: 0.875rem;
   text-decoration: none;
-  padding: 2px 8px;
-  font-size: 0.8rem;
-  display: inline-block;
   cursor: pointer;
 }
 
-.btn-retro:active {
-  border: 2px inset #fff;
+.btn-retro:hover {
+  color: var(--bondi-lo);
+  filter: brightness(1.05);
 }
 
-.btn-retro:focus-visible {
-  outline: 2px dotted #000;
-  outline-offset: 2px;
+.btn-retro:active {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btn-retro--danger {
+  color: #b3261e;
+}
+
+.btn-retro--danger:hover {
+  color: #fff;
+  background: linear-gradient(180deg, #ffb3a8, #ff6b58 55%, #d8412d);
 }
 
 .inline-form {
   display: inline;
 }
 
+/* ---------- Forms ---------- */
+
 .form-errors {
-  background: #fff;
-  border: 2px solid #c00;
-  color: #c00;
-  padding: 8px 12px;
-  margin-bottom: 15px;
-  font-family: var(--main-font);
+  margin-bottom: 1rem;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff1ec;
+  border: 1px solid #e0795b;
+  color: #8a2a10;
+  font-family: var(--ui-font);
+  font-size: 0.9375rem;
 }
 
 .form-errors ul {
@@ -93,7 +173,67 @@
   padding-left: 1.2rem;
 }
 
-.empty-row {
-  color: #555;
-  text-align: center;
+.admin-window--form {
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+.admin-window--form .window-body {
+  padding: 1.5rem;
+}
+
+.image-box {
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px dashed rgba(22, 33, 62, 0.25);
+}
+
+.image-preview {
+  height: 100px;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(22, 33, 62, 0.2);
+  margin-bottom: 6px;
+}
+
+.remove-image-label {
+  font-family: var(--ui-font);
+  font-size: 0.8125rem;
+  color: #b3261e;
+}
+
+.admin-form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 1.5rem;
+}
+
+/* ---------- Login ---------- */
+
+.admin-body--login {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding-block: 16px;
+}
+
+.login-window {
+  width: min(400px, 100%);
+}
+
+.login-window .window-body {
+  padding: 1.5rem;
+}
+
+.login-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.login-submit {
+  margin-top: 0.25rem;
+  width: 100%;
 }

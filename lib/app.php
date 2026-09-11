@@ -7,5 +7,6 @@ require_once __DIR__ . '/throttle.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/upload.php';
 require_once __DIR__ . '/guestbook.php';
+require_once __DIR__ . '/assets.php';
 
 const UPLOAD_DIR = __DIR__ . '/../uploads';

@@ -22,7 +22,7 @@ function delete_button(string $type, int $id, string $label): string
         . csrf_field()
         . '<input type="hidden" name="type" value="' . e($type) . '">'
         . '<input type="hidden" name="id" value="' . $id . '">'
-        . '<button type="submit" class="btn-retro text-danger" aria-label="Delete ' . e($label) . '"><i class="bi bi-trash"></i></button>'
+        . '<button type="submit" class="btn-retro btn-retro--danger" aria-label="Delete ' . e($label) . '"><i class="bi bi-trash"></i></button>'
         . '</form>';
 }
 
@@ -36,39 +36,40 @@ $messages = fetch_rows($pdo, 'SELECT id, name, email, message, created_at FROM g
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💿</text></svg>">
     <title>Dashboard - KURSE CO.</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="<?= e(asset_url('css/main.css', '../')) ?>">
+    <link rel="stylesheet" href="<?= e(asset_url('css/admin.css', '../')) ?>">
 </head>
-<body class="p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="nama" style="font-size: 2rem;">ADMIN_PANEL_V1.0</h1>
+<body class="admin-body">
+    <header class="admin-top">
+        <h1 class="nama admin-title">Control panel</h1>
         <div class="d-flex gap-2">
-            <a href="../index.php" class="btn-retro">VIEW SITE</a>
+            <a href="../index.php" class="btn-gel btn-gel--chrome btn-gel--small">View site</a>
             <form method="post" action="logout.php" class="inline-form">
                 <?= csrf_field() ?>
-                <button type="submit" class="btn-retro">LOGOUT</button>
+                <button type="submit" class="btn-gel btn-gel--small">Log out</button>
             </form>
         </div>
-    </div>
+    </header>
 
     <?php if (!$pdo): ?>
-        <div class="form-errors" role="alert">DATABASE OFFLINE: check the db container and DB_* settings in .env.</div>
+        <div class="form-errors" role="alert">The database is offline. Check that the db container is running and the DB_* settings in .env are correct.</div>
     <?php endif; ?>
 
     <!-- Projects Management -->
-    <div class="admin-window">
-        <div class="window-header">
-            <span>PROJECTS_MANAGER.EXE</span>
-            <a href="project_form.php" class="btn-retro ms-2">+ ADD NEW</a>
+    <section class="window admin-window">
+        <div class="window-bar">
+            <span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span><h2 class="window-title">Programs</h2>
+            <a href="project_form.php" class="btn-gel btn-gel--chrome btn-gel--small bar-action"><i class="bi bi-plus-lg" aria-hidden="true"></i> New project</a>
         </div>
         <div class="window-body">
             <div class="table-responsive">
                 <table class="retro-table">
                     <thead>
-                        <tr><th>ID</th><th>TITLE</th><th>TECH STACK</th><th>ACTIONS</th></tr>
+                        <tr><th scope="col">ID</th><th scope="col">Title</th><th scope="col">Built with</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
                     </thead>
                     <tbody>
                         <?php foreach ($projects as $row): ?>
@@ -83,25 +84,25 @@ $messages = fetch_rows($pdo, 'SELECT id, name, email, message, created_at FROM g
                             </tr>
                         <?php endforeach; ?>
                         <?php if (!$projects): ?>
-                            <tr><td colspan="4" class="empty-row">NO PROJECTS YET</td></tr>
+                            <tr><td colspan="4" class="empty-row">No programs yet. Add one with New project.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Blog Management -->
-    <div class="admin-window">
-        <div class="window-header">
-            <span>BLOG_MANAGER.EXE</span>
-            <a href="blog_form.php" class="btn-retro ms-2">+ ADD NEW</a>
+    <section class="window admin-window">
+        <div class="window-bar">
+            <span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span><h2 class="window-title">System logs</h2>
+            <a href="blog_form.php" class="btn-gel btn-gel--chrome btn-gel--small bar-action"><i class="bi bi-plus-lg" aria-hidden="true"></i> New log</a>
         </div>
         <div class="window-body">
             <div class="table-responsive">
                 <table class="retro-table">
                     <thead>
-                        <tr><th>ID</th><th>DATE</th><th>TITLE</th><th>ACTIONS</th></tr>
+                        <tr><th scope="col">ID</th><th scope="col">Date</th><th scope="col">Title</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
                     </thead>
                     <tbody>
                         <?php foreach ($blogs as $row): ?>
@@ -116,24 +117,24 @@ $messages = fetch_rows($pdo, 'SELECT id, name, email, message, created_at FROM g
                             </tr>
                         <?php endforeach; ?>
                         <?php if (!$blogs): ?>
-                            <tr><td colspan="4" class="empty-row">NO LOGS YET</td></tr>
+                            <tr><td colspan="4" class="empty-row">No logs yet. Write one with New log.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Guestbook Inbox -->
-    <div class="admin-window">
-        <div class="window-header">
-            <span>INBOX.EXE (<?= count($messages) ?>)</span>
+    <section class="window admin-window">
+        <div class="window-bar">
+            <span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span><h2 class="window-title">Guestbook inbox</h2><span class="bar-count"><?= count($messages) ?> <?= count($messages) === 1 ? 'message' : 'messages' ?></span>
         </div>
         <div class="window-body">
             <div class="table-responsive">
                 <table class="retro-table">
                     <thead>
-                        <tr><th>RECEIVED</th><th>FROM</th><th>MESSAGE</th><th>ACTIONS</th></tr>
+                        <tr><th scope="col">Received</th><th scope="col">From</th><th scope="col">Message</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
                     </thead>
                     <tbody>
                         <?php foreach ($messages as $row): ?>
@@ -150,12 +151,12 @@ $messages = fetch_rows($pdo, 'SELECT id, name, email, message, created_at FROM g
                             </tr>
                         <?php endforeach; ?>
                         <?php if (!$messages): ?>
-                            <tr><td colspan="4" class="empty-row">INBOX EMPTY</td></tr>
+                            <tr><td colspan="4" class="empty-row">No guestbook messages yet.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
+    </section>
 </body>
 </html>

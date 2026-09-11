@@ -51,7 +51,7 @@ function handle_guestbook_post(?PDO $pdo): array
     }
     // Honeypot: humans never see this field, bots fill it. Pretend it worked.
     if (post_string('website') !== '') {
-        return ['type' => 'success', 'message' => 'Message transmitted successfully!', 'old' => []];
+        return ['type' => 'success', 'message' => 'Signed. Thanks for your message!', 'old' => []];
     }
     $wait = guestbook_cooldown_left($_SESSION['guestbook_last_sent'] ?? null, time());
     if ($wait > 0) {
@@ -68,7 +68,7 @@ function handle_guestbook_post(?PDO $pdo): array
         return ['type' => 'error', 'message' => implode(' ', $result['errors']), 'old' => $input];
     }
     if ($pdo === null) {
-        return ['type' => 'error', 'message' => 'Transmission failed: the database is offline. Please email me instead.', 'old' => $input];
+        return ['type' => 'error', 'message' => 'Your message could not be saved because the database is offline. Please email me instead.', 'old' => $input];
     }
 
     try {
@@ -76,10 +76,10 @@ function handle_guestbook_post(?PDO $pdo): array
         $stmt->execute([$result['data']['name'], $result['data']['email'], $result['data']['message']]);
     } catch (PDOException $e) {
         error_log('Guestbook insert failed: ' . $e->getMessage());
-        return ['type' => 'error', 'message' => 'Transmission failed. Please try again later.', 'old' => $input];
+        return ['type' => 'error', 'message' => 'Your message could not be saved. Please try again in a few minutes.', 'old' => $input];
     }
 
     $_SESSION['guestbook_last_sent'] = time();
     throttle_record('guestbook', client_ip(), 3600);
-    return ['type' => 'success', 'message' => 'Message transmitted successfully!', 'old' => []];
+    return ['type' => 'success', 'message' => 'Signed. Thanks for your message!', 'old' => []];
 }

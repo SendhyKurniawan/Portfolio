@@ -1,193 +1,120 @@
-/* Guestbook / Social Layout */
-.social-wrapper {
-  background: #d4dded; /* Classic social net blue-ish gray */
-  border: 1px solid #9fb4d8;
-  border-radius: 4px;
-  padding: 10px;
-  max-width: 900px;
-  margin: 0 auto;
-  color: #333; /* Dark text for contrast on light bg */
+/* ---------- Guestbook ---------- */
+
+.guestbook-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+  gap: 2rem;
 }
 
-/* Header */
-.social-header {
-  background: #6d84b4; /* Classic Blue */
-  color: #fff;
-  padding: 5px 10px;
-  font-family: var(--header-font);
-  font-size: 0.9rem;
-  border-radius: 4px 4px 0 0;
-  margin-bottom: 10px;
+.guestbook-subhead {
+  font-family: var(--ui-font);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 1rem;
+}
+
+/* Desktop icons: glossy tile + label that highlights like a selected icon */
+.desk-icons {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desk-icon {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-}
-
-.social-breadcrumbs {
-  font-size: 0.8rem;
-  color: #eee;
-}
-
-/* Sidebar (Connections) */
-.connection-card {
-  display: block;
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 5px;
-  text-align: center;
-  margin-bottom: 10px;
-  cursor: pointer;
+  gap: 6px;
+  width: 4.75rem;
   text-decoration: none;
-  transition: transform 0.2s;
+  color: var(--ink);
 }
 
-.connection-card:hover,
-.connection-card:focus-visible {
-  transform: scale(1.05);
-  border-color: #6d84b4;
+.desk-icon-tile {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, #f4f7fb, #b9c4d6);
+  border: 1px solid rgba(22, 33, 62, 0.2);
+  box-shadow: inset 0 -2px 4px rgba(22, 33, 62, 0.18), 0 6px 12px -6px rgba(22, 33, 62, 0.5);
+  font-size: 1.5rem;
+  color: var(--bondi-lo);
 }
 
-.connection-card:focus-visible {
-  outline: 2px solid #6d84b4;
-  outline-offset: 2px;
-}
-
-.connection-img {
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  background: #000;
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 2rem;
-}
-
-.connection-name {
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #2b5d9c;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Guestbook Main Form */
-.guestbook-main {
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 15px;
-  border-radius: 4px;
-}
-
-.guestbook-title {
-  color: #d14836;
-  font-weight: bold;
-  font-family: Arial, sans-serif;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 5px;
-}
-
-/* Fake Toolbar */
-.formatting-toolbar {
-  background: #f0f0f0;
-  border: 1px solid #ccc;
-  border-bottom: none;
-  padding: 5px;
-  display: flex;
-  gap: 5px;
-}
-
-.toolbar-btn {
-  background: #f8f8f8;
-  border: 1px solid #aaa;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Times New Roman, serif;
-  font-weight: bold;
-  cursor: pointer;
-  color: #000;
-}
-
-.toolbar-btn:hover {
-  background: #e0e0e0;
-}
-
-/* Form Inputs override for this section */
-.guestbook-input {
-  width: 100%;
-  background: #fff !important;
-  border: 1px solid #ccc !important;
-  color: #333 !important;
-  font-family: Arial, sans-serif !important;
-  padding: 8px;
-  font-size: 0.9rem;
-  border-radius: 0;
-}
-
-.guestbook-input:focus {
-  border-color: #6d84b4 !important;
-  box-shadow: 0 0 3px rgba(109, 132, 180, 0.5);
-}
-
-.guestbook-submit {
-  background: #6d84b4;
-  color: #fff;
-  border: 1px solid #3b5998;
-  padding: 5px 15px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.guestbook-submit:hover {
-  background: #5d74a4;
-}
-
-.guestbook-submit:focus-visible {
-  outline: 2px solid #3b5998;
-  outline-offset: 2px;
-}
-
-.guestbook-label {
-  display: block;
-  font-family: Arial, sans-serif;
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #2b5d9c;
-  margin-bottom: 2px;
-}
-
-.guestbook-note {
-  font-family: Arial, sans-serif;
+.desk-icon-label {
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-family: var(--ui-font);
   font-size: 0.75rem;
-  color: #666;
 }
 
+.desk-icon:hover .desk-icon-label,
+.desk-icon:focus-visible .desk-icon-label {
+  background: var(--bondi);
+  color: #fff;
+}
+
+.desk-icon:focus-visible {
+  outline: none;
+}
+
+.desk-icon:focus-visible .desk-icon-tile {
+  outline: 3px solid var(--tangerine);
+  outline-offset: 2px;
+}
+
+/* Form */
+.guestbook-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.form-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.form-note {
+  margin: 0;
+  font-family: var(--ui-font);
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+/* Status after submitting: success reads out on the LCD, errors in a warning panel */
 .guestbook-flash {
-  font-family: Arial, sans-serif;
-  font-size: 0.9rem;
-  padding: 8px 10px;
-  margin-bottom: 12px;
-  border: 1px solid;
+  padding: 10px 12px;
+  font-family: var(--ui-font);
+  font-size: 0.9375rem;
 }
 
-.guestbook-flash--success {
-  background: #e8f5e0;
-  border-color: #6a9f4d;
-  color: #2f5d17;
+.guestbook-flash.lcd {
+  font-family: var(--lcd-font);
+  font-size: 1.35rem;
 }
 
 .guestbook-flash--error {
-  background: #fbe9e7;
-  border-color: #d14836;
-  color: #a1281a;
+  border-radius: 10px;
+  background: #fff1ec;
+  border: 1px solid #e0795b;
+  color: #8a2a10;
 }
 
 /* Honeypot: off-screen instead of display:none so naive bots still fill it */
@@ -197,4 +124,17 @@
   width: 1px;
   height: 1px;
   overflow: hidden;
+}
+
+@media (max-width: 767.98px) {
+  .guestbook-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 479.98px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
 }

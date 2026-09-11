@@ -79,14 +79,15 @@ $currentImage = $blog['image'] ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💿</text></svg>">
     <title><?= $id ? 'Edit' : 'Add' ?> Blog - KURSE CO.</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="<?= e(asset_url('css/main.css', '../')) ?>">
+    <link rel="stylesheet" href="<?= e(asset_url('css/admin.css', '../')) ?>">
 </head>
-<body>
-    <div class="admin-window admin-window--form">
-        <div class="window-header"><?= $id ? 'EDIT_LOG.EXE' : 'NEW_LOG.EXE' ?></div>
+<body class="admin-body">
+    <div class="window admin-window admin-window--form">
+        <div class="window-bar"><span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span><h1 class="window-title admin-form-title"><?= $id ? 'Edit log' : 'New log' ?></h1></div>
         <div class="window-body">
             <?php if ($errors): ?>
                 <div class="form-errors" role="alert">
@@ -96,38 +97,38 @@ $currentImage = $blog['image'] ?? '';
             <form method="POST" enctype="multipart/form-data">
                 <?= csrf_field() ?>
                 <div class="mb-3">
-                    <label for="title" class="form-label text-dark fw-bold">Title</label>
-                    <input type="text" id="title" name="title" maxlength="255" class="form-control rounded-0" value="<?= e($blog['title']) ?>" required>
+                    <label for="title" class="field-label">Title</label>
+                    <input type="text" id="title" name="title" maxlength="255" class="field" value="<?= e($blog['title']) ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label for="date" class="form-label text-dark fw-bold">Date</label>
-                    <input type="date" id="date" name="date" class="form-control rounded-0" value="<?= e($blog['date']) ?>" required>
+                    <label for="date" class="field-label">Date</label>
+                    <input type="date" id="date" name="date" class="field" value="<?= e($blog['date']) ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label for="content" class="form-label text-dark fw-bold">Content</label>
-                    <textarea id="content" name="content" class="form-control rounded-0" rows="6" required><?= e($blog['content']) ?></textarea>
+                    <label for="content" class="field-label">Content</label>
+                    <textarea id="content" name="content" class="field" rows="6" required><?= e($blog['content']) ?></textarea>
                 </div>
 
-                <div class="mb-3 p-2 bg-white border">
-                    <span class="form-label text-dark fw-bold d-block">Image</span>
+                <div class="mb-3 image-box">
+                    <span class="field-label">Image</span>
                     <?php if ($currentImage !== ''): ?>
                         <div class="mb-2">
-                            <img src="<?= e(is_http_url($currentImage) ? $currentImage : '../' . $currentImage) ?>" alt="Current log image" style="height: 100px; object-fit: cover; border: 1px solid #000;">
+                            <img src="<?= e(is_http_url($currentImage) ? $currentImage : '../' . $currentImage) ?>" alt="Current log image" class="image-preview">
                             <br>
-                            <input type="checkbox" name="remove_image" id="remove_image"> <label for="remove_image" class="text-danger small">Remove Image</label>
+                            <input type="checkbox" name="remove_image" id="remove_image"> <label for="remove_image" class="remove-image-label">Remove image</label>
                         </div>
                     <?php endif; ?>
 
-                    <label for="image_file" class="small text-muted">Upload New Image (JPG, PNG, GIF or WebP, max 5 MB)</label>
-                    <input type="file" id="image_file" name="image_file" accept="image/jpeg,image/png,image/gif,image/webp" class="form-control rounded-0 mb-2">
+                    <label for="image_file" class="field-hint d-block mb-1">Upload a new image (JPG, PNG, GIF or WebP, up to 5 MB). It replaces the current one.</label>
+                    <input type="file" id="image_file" name="image_file" accept="image/jpeg,image/png,image/gif,image/webp" class="field mb-3">
 
-                    <label for="image_url" class="small text-muted">OR Image URL</label>
-                    <input type="url" id="image_url" name="image_url" class="form-control rounded-0" placeholder="https://..." value="<?= is_http_url($currentImage) ? e($currentImage) : '' ?>">
+                    <label for="image_url" class="field-hint d-block mb-1">Or paste an image URL</label>
+                    <input type="url" id="image_url" name="image_url" class="field" placeholder="https://..." value="<?= is_http_url($currentImage) ? e($currentImage) : '' ?>">
                 </div>
 
-                <div class="d-flex justify-content-between">
-                    <a href="dashboard.php" class="btn btn-secondary rounded-0">CANCEL</a>
-                    <button type="submit" class="btn btn-primary rounded-0">SAVE</button>
+                <div class="admin-form-actions">
+                    <a href="dashboard.php" class="btn-gel btn-gel--chrome">Cancel</a>
+                    <button type="submit" class="btn-gel">Save</button>
                 </div>
             </form>
         </div>

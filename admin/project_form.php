@@ -84,14 +84,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $pdo) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💿</text></svg>">
     <title><?= $id ? 'Edit' : 'Add' ?> Project - KURSE CO.</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="<?= e(asset_url('css/main.css', '../')) ?>">
+    <link rel="stylesheet" href="<?= e(asset_url('css/admin.css', '../')) ?>">
 </head>
-<body>
-    <div class="admin-window admin-window--form">
-        <div class="window-header"><?= $id ? 'EDIT_PROJECT.EXE' : 'NEW_PROJECT.EXE' ?></div>
+<body class="admin-body">
+    <div class="window admin-window admin-window--form">
+        <div class="window-bar"><span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span><h1 class="window-title admin-form-title"><?= $id ? 'Edit project' : 'New project' ?></h1></div>
         <div class="window-body">
             <?php if ($errors): ?>
                 <div class="form-errors" role="alert">
@@ -101,46 +102,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $pdo) {
             <form method="POST" enctype="multipart/form-data">
                 <?= csrf_field() ?>
                 <div class="mb-3">
-                    <label for="title" class="form-label text-dark fw-bold">Title</label>
-                    <input type="text" id="title" name="title" maxlength="255" class="form-control rounded-0" value="<?= e($project['title']) ?>" required>
+                    <label for="title" class="field-label">Title</label>
+                    <input type="text" id="title" name="title" maxlength="255" class="field" value="<?= e($project['title']) ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label for="file_name" class="form-label text-dark fw-bold">File Name (For window header, e.g. APP.EXE)</label>
-                    <input type="text" id="file_name" name="file_name" maxlength="255" class="form-control rounded-0" value="<?= e($project['file_name']) ?>" required>
+                    <label for="file_name" class="field-label">Window title <span class="field-hint">(shown in the title bar, e.g. shop.exe)</span></label>
+                    <input type="text" id="file_name" name="file_name" maxlength="255" class="field" value="<?= e($project['file_name']) ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label for="description" class="form-label text-dark fw-bold">Description</label>
-                    <textarea id="description" name="description" maxlength="5000" class="form-control rounded-0" rows="3" required><?= e($project['description']) ?></textarea>
+                    <label for="description" class="field-label">Description</label>
+                    <textarea id="description" name="description" maxlength="5000" class="field" rows="3" required><?= e($project['description']) ?></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="tech_stack" class="form-label text-dark fw-bold">Tech Stack (comma separated)</label>
-                    <input type="text" id="tech_stack" name="tech_stack" maxlength="255" class="form-control rounded-0" value="<?= e($project['tech_stack']) ?>" required>
+                    <label for="tech_stack" class="field-label">Built with <span class="field-hint">(comma separated)</span></label>
+                    <input type="text" id="tech_stack" name="tech_stack" maxlength="255" class="field" value="<?= e($project['tech_stack']) ?>" required>
                 </div>
 
-                <div class="mb-3 p-2 bg-white border">
-                    <span class="form-label text-dark fw-bold d-block">Image</span>
+                <div class="mb-3 image-box">
+                    <span class="field-label">Image</span>
                     <?php if (!empty($project['image'])): ?>
                         <div class="mb-2">
-                            <img src="<?= e(is_http_url($project['image']) ? $project['image'] : '../' . $project['image']) ?>" alt="Current project image" style="height: 100px; object-fit: cover; border: 1px solid #000;">
+                            <img src="<?= e(is_http_url($project['image']) ? $project['image'] : '../' . $project['image']) ?>" alt="Current project image" class="image-preview">
                             <br>
-                            <input type="checkbox" name="remove_image" id="remove_image"> <label for="remove_image" class="text-danger small">Remove Image</label>
+                            <input type="checkbox" name="remove_image" id="remove_image"> <label for="remove_image" class="remove-image-label">Remove image</label>
                         </div>
                     <?php endif; ?>
 
-                    <label for="image_file" class="small text-muted">Upload New Image (JPG, PNG, GIF or WebP, max 5 MB; overrides existing)</label>
-                    <input type="file" id="image_file" name="image_file" accept="image/jpeg,image/png,image/gif,image/webp" class="form-control rounded-0 mb-2">
+                    <label for="image_file" class="field-hint d-block mb-1">Upload a new image (JPG, PNG, GIF or WebP, up to 5 MB). It replaces the current one.</label>
+                    <input type="file" id="image_file" name="image_file" accept="image/jpeg,image/png,image/gif,image/webp" class="field mb-3">
 
-                    <label for="image_url" class="small text-muted">OR Image URL (Fallback)</label>
-                    <input type="url" id="image_url" name="image_url" class="form-control rounded-0" placeholder="https://..." value="<?= is_http_url($project['image']) ? e($project['image']) : '' ?>">
+                    <label for="image_url" class="field-hint d-block mb-1">Or paste an image URL</label>
+                    <input type="url" id="image_url" name="image_url" class="field" placeholder="https://..." value="<?= is_http_url($project['image']) ? e($project['image']) : '' ?>">
                 </div>
 
                 <div class="mb-3">
-                    <label for="link" class="form-label text-dark fw-bold">Project Link</label>
-                    <input type="url" id="link" name="link" maxlength="255" class="form-control rounded-0" placeholder="https://..." value="<?= e($project['link']) ?>" required>
+                    <label for="link" class="field-label">Site link</label>
+                    <input type="url" id="link" name="link" maxlength="255" class="field" placeholder="https://..." value="<?= e($project['link']) ?>" required>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <a href="dashboard.php" class="btn btn-secondary rounded-0">CANCEL</a>
-                    <button type="submit" class="btn btn-primary rounded-0">SAVE</button>
+                <div class="admin-form-actions">
+                    <a href="dashboard.php" class="btn-gel btn-gel--chrome">Cancel</a>
+                    <button type="submit" class="btn-gel">Save</button>
                 </div>
             </form>
         </div>

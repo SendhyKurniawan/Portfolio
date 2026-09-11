@@ -148,7 +148,7 @@ final class GuestbookTest extends TestCase
 
         $result = handle_guestbook_post($this->pdo);
 
-        $this->assertSame('Transmission failed. Please try again later.', $result['message']);
+        $this->assertSame('Your message could not be saved. Please try again in a few minutes.', $result['message']);
         $this->assertArrayNotHasKey('guestbook_last_sent', $_SESSION);
     }
 }

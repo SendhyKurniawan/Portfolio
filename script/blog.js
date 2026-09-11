@@ -14,7 +14,10 @@ if (blogModal) {
     const modalContent = blogModal.querySelector('#modalContent');
 
     if (modalTitle) modalTitle.textContent = title;
-    if (modalDate) modalDate.textContent = '> TIMESTAMP: ' + date;
+    if (modalDate) {
+      modalDate.textContent = 'Received ' + date;
+      modalDate.setAttribute('datetime', date);
+    }
     if (modalImage) {
       // Posts without an image should not show an empty 300px box
       modalImage.hidden = !image;
