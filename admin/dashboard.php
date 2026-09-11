@@ -16,6 +16,19 @@ function fetch_rows(?PDO $pdo, string $sql): array
     }
 }
 
+function approve_button(int $id, bool $approved): string
+{
+    $next = $approved ? '0' : '1';
+    $label = $approved ? 'Hide from the guestbook' : 'Show in the guestbook';
+    $icon = $approved ? 'bi-eye-slash' : 'bi-eye';
+    return '<form method="post" action="approve.php" class="inline-form">'
+        . csrf_field()
+        . '<input type="hidden" name="id" value="' . $id . '">'
+        . '<input type="hidden" name="approved" value="' . $next . '">'
+        . '<button type="submit" class="btn-retro" aria-label="' . e($label) . '" title="' . e($label) . '"><i class="bi ' . $icon . '"></i></button>'
+        . '</form>';
+}
+
 function delete_button(string $type, int $id, string $label): string
 {
     return '<form method="post" action="delete.php" class="inline-form" onsubmit="return confirm(\'Confirm delete?\')">'
@@ -26,9 +39,18 @@ function delete_button(string $type, int $id, string $label): string
         . '</form>';
 }
 
+if ($pdo) {
+    // Same lazy migration as the public page, so the inbox works even if nobody visited it first
+    try {
+        $pdo->query('SELECT approved FROM guestbook LIMIT 1');
+    } catch (Exception $e) {
+        include '../database/migrate_guestbook.php';
+    }
+}
+
 $projects = fetch_rows($pdo, 'SELECT id, title, tech_stack FROM projects ORDER BY id DESC');
 $blogs = fetch_rows($pdo, 'SELECT id, date, title FROM blogs ORDER BY date DESC');
-$messages = fetch_rows($pdo, 'SELECT id, name, email, message, created_at FROM guestbook ORDER BY created_at DESC');
+$messages = fetch_rows($pdo, 'SELECT id, name, email, message, approved, created_at FROM guestbook ORDER BY created_at DESC');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -135,7 +157,7 @@ $messages = fetch_rows($pdo, 'SELECT id, name, email, message, created_at FROM g
             <div class="table-responsive">
                 <table class="retro-table">
                     <thead>
-                        <tr><th scope="col">Received</th><th scope="col">From</th><th scope="col">Message</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
+                        <tr><th scope="col">Received</th><th scope="col">From</th><th scope="col">Message</th><th scope="col">Shown</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
                     </thead>
                     <tbody>
                         <?php foreach ($messages as $row): ?>
@@ -148,11 +170,15 @@ $messages = fetch_rows($pdo, 'SELECT id, name, email, message, created_at FROM g
                                     <?php endif; ?>
                                 </td>
                                 <td class="message-cell"><?= e($row['message']) ?></td>
-                                <td><?= delete_button('guestbook', (int) $row['id'], 'message from ' . $row['name']) ?></td>
+                                <td><?= $row['approved'] ? '<span class="badge-shown">On the site</span>' : '<span class="badge-hidden">Private</span>' ?></td>
+                                <td>
+                                    <?= approve_button((int) $row['id'], (bool) $row['approved']) ?>
+                                    <?= delete_button('guestbook', (int) $row['id'], 'message from ' . $row['name']) ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         <?php if (!$messages): ?>
-                            <tr><td colspan="4" class="empty-row">No guestbook messages yet.</td></tr>
+                            <tr><td colspan="5" class="empty-row">No guestbook messages yet.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>

@@ -93,6 +93,20 @@ $home = http('GET', $base . '/');
 check('security headers present', stripos($home['headers'], 'X-Content-Type-Options: nosniff') !== false
     && stripos($home['headers'], 'X-Frame-Options: DENY') !== false);
 check('no PHP version leak', stripos($home['headers'], 'X-Powered-By: PHP') === false);
+check('social preview points at an absolute image', strpos($home['body'], 'og:image" content="' . $base . '/img/og.jpg') !== false);
+
+echo "System properties and pictures\n";
+check('skills are listed', strpos($home['body'], 'class="skill"') !== false && strpos($home['body'], 'PHP</li>') !== false);
+check('both certificates are shown', substr_count($home['body'], 'class="cert-shot"') === 2);
+check('every picture is in the gallery', substr_count($home['body'], 'class="thumb"') === 12);
+check('picture names with spaces are URL-encoded', strpos($home['body'], 'animeedit/1%20%281%29.jpg') !== false);
+check('pictures load lazily', substr_count($home['body'], 'loading="lazy"') >= 12);
+
+echo "Blue screen 404\n";
+$missing = http('GET', $base . '/programs/gone.html');
+check('a missing page gets the blue screen', $missing['status'] === 404 && strpos($missing['body'], 'A fatal exception') !== false);
+$injected = http('GET', $base . '/x%22%3E%3Cscript%3Ealert(1)%3C/script%3E');
+check('the requested path is escaped on it', $injected['status'] === 404 && strpos($injected['body'], '"><script>') === false);
 
 echo "Blocked paths\n";
 $blocked = ['/.env', '/.env.example', '/.git/HEAD', '/config/db.php', '/lib/app.php', '/database/init.sql',
@@ -165,6 +179,8 @@ http('POST', $base . '/', ['csrf_token' => $token, 'nama' => $xssName, 'email' =
 check('valid message shows success', strpos(http('GET', $base . '/', [], $jar)['body'], 'Sent! Thanks for signing my guestbook.') !== false);
 $row = $pdo->query("SELECT name, message FROM guestbook WHERE email='guest@smoke.test'")->fetch(PDO::FETCH_ASSOC);
 check('message stored raw (no double-encoding)', $row && $row['name'] === $xssName && $row['message'] === 'Hello & <b>bye</b>');
+$wallMessage = 'Hello &amp; &lt;b&gt;bye&lt;/b&gt;';
+check('a new message stays off the public wall', strpos(http('GET', $base . '/')['body'], $wallMessage) === false);
 
 http('POST', $base . '/', ['csrf_token' => $token, 'nama' => 'Again', 'email' => 'again@smoke.test', 'pesan' => 'second'], $jar);
 check('second message within a minute is rate limited', strpos(http('GET', $base . '/', [], $jar)['body'], 'Please wait') !== false);
@@ -189,6 +205,23 @@ echo "Admin writes\n";
 $guestId = (int) $pdo->query("SELECT id FROM guestbook WHERE email='guest@smoke.test'")->fetchColumn();
 check('delete via GET is refused (405)', http('GET', $base . "/admin/delete.php?type=guestbook&id=$guestId", [], $admin)['status'] === 405);
 check('delete without CSRF is refused (400)', http('POST', $base . '/admin/delete.php', ['type' => 'guestbook', 'id' => $guestId], $admin)['status'] === 400);
+
+echo "Guestbook wall\n";
+check('approve via GET is refused (405)', http('GET', $base . "/admin/approve.php?id=$guestId&approved=1", [], $admin)['status'] === 405);
+check('approve without CSRF is refused (400)', http('POST', $base . '/admin/approve.php', ['id' => $guestId, 'approved' => '1'], $admin)['status'] === 400);
+$stranger = new_jar();
+check('approve from outside the admin session is refused',
+    http('POST', $base . '/admin/approve.php', ['csrf_token' => $token, 'id' => $guestId, 'approved' => '1'], $stranger)['status'] === 302);
+check('...and the message is still hidden', strpos(http('GET', $base . '/')['body'], $wallMessage) === false);
+
+http('POST', $base . '/admin/approve.php', ['csrf_token' => $token, 'id' => $guestId, 'approved' => '1'], $admin);
+$page = http('GET', $base . '/')['body'];
+check('an approved message shows on the public wall', strpos($page, $wallMessage) !== false);
+check('...escaped, and without the email address', strpos($page, '<script>alert(1)</script>') === false
+    && strpos($page, 'guest@smoke.test') === false);
+
+http('POST', $base . '/admin/approve.php', ['csrf_token' => $token, 'id' => $guestId, 'approved' => '0'], $admin);
+check('approval can be taken back', strpos(http('GET', $base . '/')['body'], $wallMessage) === false);
 
 $fakeImage = tempnam(sys_get_temp_dir(), 'smk');
 file_put_contents($fakeImage, '<?php system($_GET["c"]); ?>');

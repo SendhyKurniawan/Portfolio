@@ -28,7 +28,7 @@ if ($pdo) {
                 'CUFFOUR VOL2',
                 'CUFFOUR is a foreign language extracurricular program at SMAN 54 Jakarta. A dynamic platform showcasing diverse cultures including Japanese, Korean, and German.',
                 'HTML, CSS, JS, Bootstrap 5',
-                'https://placehold.co/600x300/1a1a2e/00f3ff?text=CUFFOUR+VOL2',
+                'img/projects/web/cuffour.jpeg',
                 'https://cuffourvol2.github.io/cuffourvol2/index.html',
                 'CUFFOUR_VOL2.EXE'
             ],
@@ -36,7 +36,7 @@ if ($pdo) {
                 'LYNX STREZZO NFT',
                 'A digital oasis of boundless creativity. A veritable gallery of the future where infinite possibilities converge.',
                 'HTML, CSS, JS, AOS',
-                'https://placehold.co/600x300/1a1a2e/bd00ff?text=LYNX+NFT',
+                'img/projects/web/lynx.jpeg',
                 'https://sendhykurniawan.github.io/Lynx-Strezzo-NFT-V2/',
                 'LYNX_NFT.EXE'
             ],
@@ -44,7 +44,7 @@ if ($pdo) {
                 'LA PIZZERIA',
                 'An educational project replicating and reinventing a web presence, honing skills in web development and UX.',
                 'HTML, CSS, JS, Bootstrap 5',
-                'https://placehold.co/600x300/1a1a2e/00f3ff?text=LA+PIZZERIA',
+                'img/projects/web/pizzeria.jpeg',
                 'https://sendhykurniawan.github.io/lapizzeria/',
                 'PIZZERIA.EXE'
             ],
@@ -52,7 +52,7 @@ if ($pdo) {
                 'MRS FURNITURE',
                 'Crafting an innovative digital platform for a visionary business concept, redefining the furniture retail experience.',
                 'HTML, CSS, JS, AOS',
-                'https://placehold.co/600x300/1a1a2e/bd00ff?text=MRS+FURNITURE',
+                'img/projects/web/mrsfurniture.jpeg',
                 'https://sendhykurniawan.github.io/mrsfurniture/',
                 'MRS_FURNITURE.EXE'
             ],
@@ -60,7 +60,7 @@ if ($pdo) {
                 'IMEDIA 2023',
                 'A comprehensive orientation hub for incoming college students. Resources, guidance, and insights for a seamless transition.',
                 'HTML, CSS, JS, AOS',
-                'https://placehold.co/600x300/1a1a2e/00f3ff?text=IMEDIA+2023',
+                'img/projects/web/imedia.jpeg',
                 'https://sendhykurniawan.github.io/iMEDIA2023/',
                 'IMEDIA_2023.EXE'
             ]

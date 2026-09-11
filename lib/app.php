@@ -10,5 +10,7 @@ require_once __DIR__ . '/guestbook.php';
 require_once __DIR__ . '/assets.php';
 require_once __DIR__ . '/visitors.php';
 require_once __DIR__ . '/badges.php';
+require_once __DIR__ . '/skills.php';
+require_once __DIR__ . '/gallery.php';
 
 const UPLOAD_DIR = __DIR__ . '/../uploads';

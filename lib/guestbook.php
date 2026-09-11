@@ -1,5 +1,6 @@
 <?php
 
+const GUESTBOOK_WALL_LIMIT = 20;
 const GUESTBOOK_COOLDOWN_SECONDS = 60;
 const GUESTBOOK_MAX_PER_HOUR = 5;
 const GUESTBOOK_RULES = [
@@ -82,4 +83,26 @@ function handle_guestbook_post(?PDO $pdo): array
     $_SESSION['guestbook_last_sent'] = time();
     throttle_record('guestbook', client_ip(), 3600);
     return ['type' => 'success', 'message' => 'Sent! Thanks for signing my guestbook.', 'old' => []];
+}
+
+/** Messages the visitor approved for the public wall, oldest first so they read like a chat. */
+function fetch_public_guestbook(?PDO $pdo, int $limit = GUESTBOOK_WALL_LIMIT): array
+{
+    if (!$pdo) {
+        return [];
+    }
+    try {
+        // Email addresses stay private: only the name, message and date are selected
+        $stmt = $pdo->query('SELECT name, message, created_at FROM guestbook WHERE approved = 1
+            ORDER BY created_at DESC, id DESC LIMIT ' . max(1, $limit));
+        return array_reverse($stmt->fetchAll(PDO::FETCH_ASSOC));
+    } catch (PDOException $e) {
+        error_log('Guestbook wall query failed: ' . $e->getMessage());
+        return [];
+    }
+}
+
+function set_guestbook_approval(PDO $pdo, int $id, bool $approved): bool
+{
+    return $pdo->prepare('UPDATE guestbook SET approved = ? WHERE id = ?')->execute([$approved ? 1 : 0, $id]);
 }

@@ -26,6 +26,13 @@ if ($pdo) {
         include 'database/migrate_projects.php';
     }
 
+    // Guestbook wall needs the approval flag; older databases don't have it yet
+    try {
+        $pdo->query('SELECT approved FROM guestbook LIMIT 1');
+    } catch (Exception $e) {
+        include 'database/migrate_guestbook.php';
+    }
+
     try {
         $projects = $pdo->query("SELECT * FROM projects ORDER BY id ASC")->fetchAll();
     } catch (Exception $e) {
@@ -43,7 +50,21 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
 // The 1999 iMac colours; script/flavour-boot.js and script/flavour.js use the same keys
 $flavours = ['bondi' => 'Bondi Blue', 'tangerine' => 'Tangerine', 'grape' => 'Grape', 'lime' => 'Lime', 'strawberry' => 'Strawberry'];
 $emoticons = [':)' => ['🙂', 'Smile'], ':D' => ['😄', 'Big grin'], ';)' => ['😉', 'Wink'], ':P' => ['😛', 'Tongue out'], '<3' => ['❤️', 'Heart']];
+$wall = fetch_public_guestbook($pdo);
 $now = time();
+$skills = collect_skills($projects);
+// Scanned from img/certif/, read off the certificates themselves
+$certificates = [
+  ['file' => 'img/certif/sl_html.png', 'course' => 'HTML', 'issuer' => 'SoloLearn', 'issued' => '2019-06-09', 'serial' => 'CT-1A3FPKBF'],
+  ['file' => 'img/certif/sl_css.png', 'course' => 'CSS', 'issuer' => 'SoloLearn', 'issued' => '2021-06-13', 'serial' => 'CT-KIFU8ZCT'],
+];
+$albums = array_map(
+  static fn(array $album) => $album + ['images' => gallery_images(__DIR__ . '/' . $album['path'], $album['path'])],
+  [
+    ['name' => 'Anime edits', 'path' => 'img/projects/animeedit'],
+    ['name' => 'Photo manipulations', 'path' => 'img/projects/manipulation'],
+  ]
+);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +79,14 @@ $now = time();
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Sendhy Kurniawan | KURSE CO." />
   <meta property="og:description" content="Websites designed and built by Sendhy Kurniawan." />
+  <meta property="og:url" content="<?= e(absolute_url('index.php')) ?>" />
+  <?php if (is_file(__DIR__ . '/img/og.jpg')): ?>
+  <meta property="og:image" content="<?= e(absolute_url(asset_url('img/og.jpg'))) ?>" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="KURSE CO. Millennium Edition — the portfolio of Sendhy Kurniawan" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <?php endif; ?>
   <!-- Fonts (main.css @imports the same sheet; linking it here starts the download earlier) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -71,7 +100,9 @@ $now = time();
   <link rel="stylesheet" href="<?= e(asset_url('css/projects.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset_url('css/guestbook.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset_url('css/modal.css')) ?>">
+  <link rel="stylesheet" href="<?= e(asset_url('css/system.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset_url('css/screensaver.css')) ?>">
+  <link rel="stylesheet" href="<?= e(asset_url('css/mode-1999.css')) ?>">
   <!-- Applies the saved iMac flavour before first paint, so the page never flashes blue -->
   <script src="<?= e(asset_url('script/flavour-boot.js')) ?>"></script>
 </head>
@@ -89,7 +120,9 @@ $now = time();
       <div class="collapse navbar-collapse" id="siteNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="#projects">Programs</a></li>
-          <li class="nav-item"><a class="nav-link" href="#blog">System logs</a></li>
+          <li class="nav-item"><a class="nav-link" href="#system">System</a></li>
+          <li class="nav-item"><a class="nav-link" href="#pictures">Pictures</a></li>
+          <li class="nav-item"><a class="nav-link" href="#blog">Logs</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Guestbook</a></li>
         </ul>
         <div class="nav-tools">
@@ -191,6 +224,120 @@ $now = time();
       </div>
     </section>
 
+    <section id="system" class="site-section" aria-labelledby="system-heading">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="system-heading" class="nama section-title">System properties</h2>
+          <p class="section-intro">What's installed on this machine, and the paperwork that came with it.</p>
+        </div>
+
+        <div class="window sysprops">
+          <div class="window-bar">
+            <span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            <span class="window-title">System Properties</span>
+          </div>
+          <div class="nav tab-strip" role="tablist" aria-label="System properties">
+            <button type="button" class="tab active" id="tab-general" data-bs-toggle="tab" data-bs-target="#pane-general"
+              role="tab" aria-controls="pane-general" aria-selected="true">General</button>
+            <button type="button" class="tab" id="tab-skills" data-bs-toggle="tab" data-bs-target="#pane-skills"
+              role="tab" aria-controls="pane-skills" aria-selected="false">Skills</button>
+            <button type="button" class="tab" id="tab-certificates" data-bs-toggle="tab" data-bs-target="#pane-certificates"
+              role="tab" aria-controls="pane-certificates" aria-selected="false">Certificates</button>
+          </div>
+          <div class="tab-content window-body sys-body">
+            <div class="tab-pane fade show active" id="pane-general" role="tabpanel" aria-labelledby="tab-general" tabindex="0">
+              <div class="sys-general">
+                <div class="sys-emblem" aria-hidden="true"><span></span></div>
+                <dl class="sys-spec">
+                  <dt>System</dt>
+                  <dd>KURSE CO. Millennium Edition<br>Hand-written PHP, no framework</dd>
+                  <dt>Registered to</dt>
+                  <dd>Sendhy Kurniawan<br><a href="mailto:sendhy27@gmail.com">sendhy27@gmail.com</a></dd>
+                  <dt>Computer</dt>
+                  <dd>
+                    <?= count($projects) ?> <?= count($projects) === 1 ? 'program' : 'programs' ?> installed<br>
+                    <?= count($skills) ?> skills detected<br>
+                    <?= count($certificates) ?> certificates on file
+                  </dd>
+                </dl>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="pane-skills" role="tabpanel" aria-labelledby="tab-skills" tabindex="0">
+              <p class="sys-note">Everything the programs above are built with, plus what runs this site.</p>
+              <ul class="skill-list">
+                <?php foreach ($skills as $skill): ?>
+                <li class="skill"><span class="skill-mark" aria-hidden="true"></span><?= e($skill) ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+
+            <div class="tab-pane fade" id="pane-certificates" role="tabpanel" aria-labelledby="tab-certificates" tabindex="0">
+              <ul class="certs">
+                <?php foreach ($certificates as $cert): ?>
+                <li class="cert">
+                  <button type="button" class="cert-shot" data-viewer="certificates"
+                    data-src="<?= e($cert['file']) ?>"
+                    data-caption="<?= e($cert['course'] . ' course certificate, ' . $cert['issuer']) ?>">
+                    <img src="<?= e($cert['file']) ?>" alt="<?= e($cert['course']) ?> certificate from <?= e($cert['issuer']) ?>"
+                      loading="lazy" decoding="async" width="360" height="254">
+                    <span class="cert-zoom" aria-hidden="true"><i class="bi bi-arrows-fullscreen"></i></span>
+                  </button>
+                  <div class="cert-meta">
+                    <h3 class="cert-name"><?= e($cert['course']) ?> course</h3>
+                    <p class="cert-issuer"><?= e($cert['issuer']) ?></p>
+                    <p class="cert-date">Issued <time datetime="<?= e($cert['issued']) ?>"><?= e(date('j F Y', strtotime($cert['issued']))) ?></time></p>
+                    <p class="cert-serial">Certificate <?= e($cert['serial']) ?></p>
+                  </div>
+                </li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pictures" class="site-section" aria-labelledby="pictures-heading">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="pictures-heading" class="nama section-title">My Pictures</h2>
+          <p class="section-intro">Edits and photo manipulations I make away from client work. Open one to see it full size.</p>
+        </div>
+
+        <div class="window gallery-window">
+          <div class="window-bar">
+            <span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            <span class="window-title">My Pictures</span>
+          </div>
+          <div class="window-body gallery-body">
+            <?php foreach ($albums as $album): ?>
+            <?php if ($album['images']): ?>
+            <section class="album" aria-labelledby="album-<?= e(md5($album['path'])) ?>">
+              <h3 class="album-name" id="album-<?= e(md5($album['path'])) ?>">
+                <span class="folder" aria-hidden="true"></span><?= e($album['name']) ?>
+                <span class="album-count"><?= count($album['images']) ?> items</span>
+              </h3>
+              <ul class="thumbs">
+                <?php foreach ($album['images'] as $picture): ?>
+                <?php $label = $album['name'] . ' ' . $picture['number']; ?>
+                <li>
+                  <button type="button" class="thumb" data-viewer="pictures"
+                    data-src="<?= e($picture['src']) ?>" data-caption="<?= e($label) ?>">
+                    <img src="<?= e($picture['src']) ?>" alt="<?= e($label) ?>" loading="lazy" decoding="async"
+                      width="240" height="240">
+                  </button>
+                </li>
+                <?php endforeach; ?>
+              </ul>
+            </section>
+            <?php endif; ?>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="blog" class="site-section" aria-labelledby="blog-heading">
       <div class="container">
         <div class="section-head">
@@ -236,7 +383,7 @@ $now = time();
       <div class="container">
         <div class="section-head">
           <h2 id="contact-heading" class="nama section-title">Guestbook</h2>
-          <p class="section-intro">Leave a message. It goes to my inbox, not a public wall.</p>
+          <p class="section-intro">Say hello. I read every message, and I post some of them here once I've approved them.</p>
         </div>
 
         <div class="messenger">
@@ -284,6 +431,13 @@ $now = time();
             </div>
             <div class="chat-log" role="log" aria-label="Conversation">
               <p class="chat-line"><span class="chat-name">Sendhy:</span> Hi! Thanks for stopping by. Leave a message below and I'll reply by email.</p>
+              <?php foreach ($wall as $entry): ?>
+              <p class="chat-line">
+                <span class="chat-name"><?= e($entry['name']) ?>:</span>
+                <?= e($entry['message']) ?>
+                <time class="chat-time" datetime="<?= e(substr((string) $entry['created_at'], 0, 10)) ?>"><?= e(substr((string) $entry['created_at'], 0, 10)) ?></time>
+              </p>
+              <?php endforeach; ?>
               <?php if ($flash && $flash['type'] === 'success'): ?>
               <p class="chat-line chat-line--system" role="status"><?= e($flash['message']) ?></p>
               <?php endif; ?>
@@ -322,7 +476,7 @@ $now = time();
                 <textarea id="gb-message" name="pesan" class="field" rows="4" maxlength="2000" required><?= e($old['message'] ?? '') ?></textarea>
               </div>
               <div class="form-foot">
-                <p class="form-note">Ctrl + Enter sends. One message a minute, please.</p>
+                <p class="form-note">Ctrl + Enter sends. Your message stays private until I approve it.</p>
                 <button type="submit" class="btn-gel">Send</button>
               </div>
             </form>
@@ -352,6 +506,30 @@ $now = time();
     </div>
   </div>
 
+  <!-- Picture viewer, shared by the gallery and the certificates -->
+  <div class="modal fade viewer-modal" id="viewerModal" tabindex="-1" aria-labelledby="viewerTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="window-bar">
+          <h2 class="window-title viewer-title" id="viewerTitle">Preview</h2>
+          <button type="button" class="gel-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+        </div>
+        <div class="viewer-stage">
+          <img id="viewerImage" class="viewer-image" alt="">
+        </div>
+        <div class="viewer-foot">
+          <button type="button" class="btn-gel btn-gel--chrome btn-gel--small" data-viewer-step="-1">
+            <i class="bi bi-chevron-left" aria-hidden="true"></i> Previous
+          </button>
+          <p class="viewer-count" id="viewerCount" aria-live="polite"></p>
+          <button type="button" class="btn-gel btn-gel--chrome btn-gel--small" data-viewer-step="1">
+            Next <i class="bi bi-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer class="site-footer">
     <div class="container">
       <p>Designed and built by <a href="https://www.instagram.com/kurniawansendhy/" target="_blank" rel="noopener noreferrer">Sendhy Kurniawan</a></p>
@@ -376,7 +554,9 @@ $now = time();
   <script src="<?= e(asset_url('script/flavour.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/blog.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/messenger.js')) ?>" defer></script>
+  <script src="<?= e(asset_url('script/gallery.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/screensaver.js')) ?>" defer></script>
+  <script src="<?= e(asset_url('script/konami.js')) ?>" defer></script>
 </body>
 
 </html>

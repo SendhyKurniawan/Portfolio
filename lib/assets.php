@@ -17,3 +17,19 @@ function asset_url(string $path, string $prefix = ''): string
     }
     return $prefix . $path . '?v=' . filemtime($file);
 }
+
+/**
+ * Full https://host/path URL, which social previews need because they read the
+ * page from somewhere else. The Host header is the visitor's to set, so only the
+ * hostname and port shape is kept; anything else is dropped.
+ */
+function absolute_url(string $path, ?array $server = null): string
+{
+    $server ??= $_SERVER;
+    if (!preg_match('/^[A-Za-z0-9.\-]+(:\d+)?/', (string) ($server['HTTP_HOST'] ?? ''), $host)) {
+        return '';
+    }
+    $https = ($server['HTTPS'] ?? 'off') !== 'off';
+
+    return ($https ? 'https' : 'http') . '://' . $host[0] . '/' . ltrim($path, '/');
+}

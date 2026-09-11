@@ -25,4 +25,35 @@ final class AssetsTest extends TestCase
     {
         $this->assertSame('../secrets.txt', asset_url('../secrets.txt'));
     }
+
+    public function testAbsoluteUrlUsesTheHostTheVisitorAskedFor(): void
+    {
+        $this->assertSame('http://localhost:8095/img/og.jpg', absolute_url('img/og.jpg', ['HTTP_HOST' => 'localhost:8095']));
+    }
+
+    public function testAbsoluteUrlSwitchesToHttpsBehindTls(): void
+    {
+        $server = ['HTTP_HOST' => 'kurse.test', 'HTTPS' => 'on'];
+
+        $this->assertSame('https://kurse.test/img/og.jpg', absolute_url('img/og.jpg', $server));
+    }
+
+    public function testHttpsOffIsNotTreatedAsHttps(): void
+    {
+        $server = ['HTTP_HOST' => 'kurse.test', 'HTTPS' => 'off'];
+
+        $this->assertStringStartsWith('http://', absolute_url('img/og.jpg', $server));
+    }
+
+    public function testAHostHeaderCannotSmuggleAnotherSiteIn(): void
+    {
+        $server = ['HTTP_HOST' => 'evil.example.com/"><script>alert(1)</script>'];
+
+        $this->assertSame('http://evil.example.com/img/og.jpg', absolute_url('img/og.jpg', $server));
+    }
+
+    public function testWithoutAHostHeaderThereIsNoAbsoluteUrl(): void
+    {
+        $this->assertSame('', absolute_url('img/og.jpg', []));
+    }
 }

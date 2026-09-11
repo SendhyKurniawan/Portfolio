@@ -1,0 +1,369 @@
+/* System Properties dialog, My Pictures gallery and the shared picture viewer */
+
+/* ---- Tabs ------------------------------------------------------------- */
+.tab-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 10px 14px 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.3));
+  border-bottom: 1px solid rgba(22, 33, 62, 0.14);
+}
+
+.tab {
+  position: relative;
+  bottom: -1px;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid rgba(22, 33, 62, 0.18);
+  border-bottom-color: transparent;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(226, 233, 244, 0.75));
+  color: var(--ink-soft);
+  font-family: var(--ui-font);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--ink);
+  background: linear-gradient(180deg, #fff, rgba(236, 242, 250, 0.9));
+}
+
+.tab.active {
+  color: var(--ink);
+  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.72) 100%);
+  box-shadow: 0 -2px 0 var(--accent) inset;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.sys-body {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* ---- General tab ------------------------------------------------------ */
+.sys-general {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* Stand-in for the little computer illustration in the real dialog */
+.sys-emblem {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 18px;
+  background: linear-gradient(155deg, var(--accent-hi), var(--accent) 55%, var(--accent-lo));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 10px 20px -12px rgba(22, 33, 62, 0.7);
+}
+
+.sys-emblem span {
+  width: 54%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, #fff 0 12%, rgba(255, 255, 255, 0.25) 34%, transparent 58%),
+    conic-gradient(from 210deg, #ffd6ec, #bfe6f6, #c9f2df, #ffe9a8, #cbbdf6, #ffd6ec);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55);
+}
+
+.sys-spec {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.35rem 1.5rem;
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.sys-spec dt {
+  font-family: var(--ui-font);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-top: 0.2rem;
+}
+
+.sys-spec dd {
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+}
+
+.sys-note {
+  margin-top: 0;
+  font-size: 0.9375rem;
+}
+
+/* ---- Skills tab ------------------------------------------------------- */
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.skill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem 0.4rem 0.6rem;
+  border: 1px solid rgba(22, 33, 62, 0.16);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff, rgba(232, 238, 248, 0.85));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  font-family: var(--ui-font);
+  font-size: 0.875rem;
+}
+
+.skill-mark {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: linear-gradient(160deg, var(--accent-hi), var(--accent-lo));
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+}
+
+/* ---- Certificates tab ------------------------------------------------- */
+.certs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cert {
+  display: grid;
+  grid-template-columns: minmax(0, 9.5rem) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+}
+
+.cert-shot {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 1px solid rgba(22, 33, 62, 0.18);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.cert-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cert-zoom {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(22, 33, 62, 0.72);
+  color: #fff;
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.cert-shot:hover .cert-zoom,
+.cert-shot:focus-visible .cert-zoom {
+  opacity: 1;
+}
+
+.cert-name {
+  font-family: var(--ui-font);
+  font-size: 1rem;
+  margin: 0 0 0.15rem;
+}
+
+.cert-issuer,
+.cert-date,
+.cert-serial {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.cert-serial {
+  font-family: var(--lcd-font);
+  font-size: 0.9375rem;
+  letter-spacing: 0.06em;
+}
+
+/* ---- My Pictures ------------------------------------------------------ */
+.album + .album {
+  margin-top: 1.75rem;
+}
+
+.album-name {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.85rem;
+  font-family: var(--ui-font);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+/* Manila folder, drawn rather than shipped as an icon file */
+.folder {
+  position: relative;
+  flex: none;
+  width: 22px;
+  height: 17px;
+  border-radius: 2px 4px 4px 4px;
+  background: linear-gradient(180deg, #ffd98a, #f0ae3c);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+.folder::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 9px;
+  height: 4px;
+  border-radius: 2px 2px 0 0;
+  background: #f0ae3c;
+}
+
+.album-count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.thumb {
+  display: block;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid rgba(22, 33, 62, 0.14);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fff, rgba(232, 238, 248, 0.8));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  cursor: zoom-in;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 5px;
+  background: rgba(22, 33, 62, 0.06);
+}
+
+.thumb:hover,
+.thumb:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px -14px rgba(22, 33, 62, 0.8);
+}
+
+.thumb:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---- Picture viewer --------------------------------------------------- */
+.viewer-modal .modal-content {
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-window);
+  background: rgba(250, 252, 255, 0.98);
+  box-shadow: var(--shadow-window);
+  overflow: hidden;
+}
+
+.viewer-title {
+  flex: 1;
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.viewer-stage {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background:
+    repeating-conic-gradient(rgba(22, 33, 62, 0.05) 0% 25%, transparent 0% 50%) 50% / 24px 24px;
+}
+
+.viewer-image {
+  max-width: 100%;
+  max-height: min(70vh, 640px);
+  border-radius: 6px;
+  box-shadow: 0 18px 36px -20px rgba(22, 33, 62, 0.9);
+}
+
+.viewer-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgba(22, 33, 62, 0.12);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.viewer-count {
+  margin: 0;
+  font-family: var(--lcd-font);
+  font-size: 1.125rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 575.98px) {
+  .sys-general {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .sys-spec {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0 0;
+  }
+
+  .cert {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .thumbs {
+    grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb,
+  .cert-zoom {
+    transition: none;
+  }
+}

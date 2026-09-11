@@ -237,3 +237,26 @@
   margin-top: 0.25rem;
   width: 100%;
 }
+
+/* Guestbook approval state */
+.badge-shown,
+.badge-hidden {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge-shown {
+  background: #d8f2dd;
+  border: 1px solid #2f7d3f;
+  color: #1f6b2a;
+}
+
+.badge-hidden {
+  background: #eef1f8;
+  border: 1px solid rgba(22, 33, 62, 0.3);
+  color: var(--ink-soft);
+}

@@ -1,0 +1,99 @@
+/* 1999 mode: the look the Konami code unlocks (script/konami.js) */
+
+html[data-mode-1999] body {
+  font-family: "Comic Sans MS", "Comic Neue", "Chalkboard SE", var(--body-font);
+  padding-bottom: 2.25rem;
+}
+
+/* Every good 1999 homepage was still being built */
+html[data-mode-1999] body::after {
+  content: "🚧 This page is under construction — please check back soon! 🚧";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1030;
+  padding: 0.35rem 1rem;
+  background: repeating-linear-gradient(135deg, #ffd400 0 14px, #16213e 14px 28px);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 1px 2px #000, 0 0 6px #000;
+  animation: construction-crawl 1.4s linear infinite;
+}
+
+@keyframes construction-crawl {
+  to {
+    background-position: 39.6px 0;
+  }
+}
+
+/* Rainbow instead of chrome, because 1999 had no taste for subtlety */
+html[data-mode-1999] .chrome-wordmark .chrome-line {
+  background: linear-gradient(90deg, #ff3b7f, #ff8a1f, #ffe600, #4ade80, #38bdf8, #a855f7, #ff3b7f);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: rainbow-slide 6s linear infinite;
+}
+
+@keyframes rainbow-slide {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+html[data-mode-1999] .section-title {
+  text-shadow: 2px 2px 0 var(--accent-hi);
+}
+
+.sparkle-1999 {
+  position: fixed;
+  z-index: 2000;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  pointer-events: none;
+  background: conic-gradient(from 0deg, #fff, #ffe600, #ff8ad1, #7ee8fa, #fff);
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  rotate: var(--spin, 0deg);
+  animation: sparkle-fade 700ms ease-out forwards;
+}
+
+@keyframes sparkle-fade {
+  to {
+    opacity: 0;
+    scale: 0.2;
+  }
+}
+
+.mode-1999 {
+  position: fixed;
+  right: 1rem;
+  bottom: 3rem;
+  z-index: 1040;
+  width: min(20rem, calc(100vw - 2rem));
+}
+
+.mode-1999 .window-body {
+  padding: 1rem;
+}
+
+.mode-1999-line {
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.mode-1999 p {
+  font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-mode-1999] body::after,
+  html[data-mode-1999] .chrome-wordmark .chrome-line,
+  .sparkle-1999 {
+    animation: none;
+  }
+}

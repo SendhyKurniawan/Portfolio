@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS guestbook (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100),
     message TEXT NOT NULL,
+    -- Messages show on the public wall only after the admin approves them
+    approved TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
