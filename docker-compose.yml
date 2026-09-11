@@ -1,5 +1,5 @@
 services:
-  protfolio:
+  portfolio:
     container_name: portfolio_y2k
     build: .
     ports:
@@ -7,7 +7,13 @@ services:
     volumes:
       - .:/var/www/html
     environment:
-      - APACHE_DOCUMENT_ROOT=/var/www/html
+      APACHE_DOCUMENT_ROOT: /var/www/html
+      DB_HOST: db
+      DB_NAME: ${MYSQL_DATABASE:?set MYSQL_DATABASE in .env}
+      DB_USER: ${MYSQL_USER:?set MYSQL_USER in .env}
+      DB_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:?set ADMIN_USERNAME in .env}
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:?set ADMIN_PASSWORD_HASH in .env}
     depends_on:
       - db
     links:
@@ -18,15 +24,15 @@ services:
     image: mysql:8.0
     container_name: portfolio_db
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: portfolio_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?set MYSQL_DATABASE in .env}
+      MYSQL_USER: ${MYSQL_USER:?set MYSQL_USER in .env}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
     volumes:
       - ./database:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
     ports:
-      - "3388:3306"
+      - "127.0.0.1:3388:3306"
 
 volumes:
   db_data:

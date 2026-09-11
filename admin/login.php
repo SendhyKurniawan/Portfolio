@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once '../config/auth.php';
 
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
     header('Location: dashboard.php');
@@ -9,11 +10,8 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Simple hardcoded credentials for now
-    if ($username === 'admin' && $password === 'admin123') {
+    if (admin_credentials_valid(post_string('username'), post_string('password'))) {
+        session_regenerate_id(true);
         $_SESSION['admin_logged_in'] = true;
         header('Location: dashboard.php');
         exit;

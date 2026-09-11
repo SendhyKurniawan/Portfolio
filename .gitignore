@@ -1,0 +1,6 @@
+# Local secrets
+.env
+
+# Admin uploads (runtime content)
+uploads/
+img/uploads/

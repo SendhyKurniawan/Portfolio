@@ -1,7 +1,9 @@
 <?php
 session_start();
+require_once 'config/auth.php';
 if (isset($_POST['login'])) {
-    if ($_POST['password'] === 'admin123') {
+    if (admin_password_valid(post_string('password'))) {
+        session_regenerate_id(true);
         $_SESSION['admin'] = true;
     } else {
         $error = "Access Denied.";
