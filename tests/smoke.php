@@ -45,7 +45,7 @@ function check(string $name, bool $ok, string $detail = ''): void
 }
 
 /** @return array{status: int, body: string, headers: string, location: string} */
-function http(string $method, string $url, array $fields = [], ?string $jar = null, bool $multipart = false): array
+function http(string $method, string $url, array $fields = [], ?string $jar = null, bool $multipart = false, string $userAgent = ''): array
 {
     $ch = curl_init($url);
     curl_setopt_array($ch, [
@@ -53,6 +53,8 @@ function http(string $method, string $url, array $fields = [], ?string $jar = nu
         CURLOPT_HEADER => true,
         CURLOPT_FOLLOWLOCATION => false,
         CURLOPT_CUSTOMREQUEST => $method,
+        // No user agent by default, so smoke requests count as bots and leave the visitor counter alone
+        CURLOPT_USERAGENT => $userAgent,
     ]);
     if ($jar !== null) {
         curl_setopt($ch, CURLOPT_COOKIEJAR, $jar);
@@ -115,6 +117,29 @@ foreach (['/uploads/smoke-probe.php', '/Uploads/smoke-probe.php', '/UPLOADS/SMOK
     check("$path is not executed", $res['status'] === 403 && strpos($res['body'], 'EXECUTED') === false, "got {$res['status']}");
 }
 unlink($probe);
+
+echo "Visitor counter\n";
+const BROWSER_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36';
+function visitor_total(PDO $pdo): int
+{
+    try {
+        return (int) $pdo->query("SELECT value FROM site_counters WHERE name = 'visitors'")->fetchColumn();
+    } catch (PDOException $e) {
+        return 0; // table not created yet
+    }
+}
+$visitorsBefore = visitor_total($pdo);
+$visitor = new_jar();
+$page = http('GET', $base . '/', [], $visitor, false, BROWSER_UA)['body'];
+check('first page view counts a visitor', visitor_total($pdo) === $visitorsBefore + 1);
+check('footer shows the new total', strpos($page, str_pad((string) ($visitorsBefore + 1), 6, '0', STR_PAD_LEFT) . '</span>') !== false);
+http('GET', $base . '/', [], $visitor, false, BROWSER_UA);
+check('reload in the same session does not count again', visitor_total($pdo) === $visitorsBefore + 1);
+http('GET', $base . '/', [], null, false, 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+http('GET', $base . '/');
+check('bots and requests without a user agent are not counted', visitor_total($pdo) === $visitorsBefore + 1);
+// Put the real count back so smoke runs don't inflate it
+$pdo->prepare("UPDATE site_counters SET value = ? WHERE name = 'visitors'")->execute([$visitorsBefore]);
 
 echo "Guestbook\n";
 $pdo->exec("DELETE FROM guestbook WHERE email LIKE '%@smoke.test'");
@@ -227,7 +252,7 @@ check('6th attempt is locked out even with new cookies and the right password',
 reset_throttles();
 
 $pdo->exec("DELETE FROM guestbook WHERE email LIKE '%@smoke.test'");
-foreach ([$jar, $admin, $attacker, $fresh] as $cookieJar) {
+foreach ([$visitor, $jar, $admin, $attacker, $fresh] as $cookieJar) {
     @unlink($cookieJar);
 }
 

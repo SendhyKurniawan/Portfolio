@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nama'])) {
 $flash = flash_take();
 $old = $flash['old'] ?? [];
 $hasResume = is_file(__DIR__ . '/resume.pdf');
+$visitors = track_visitor($pdo);
 
 $projects = [];
 $blogs = [];
@@ -306,7 +307,11 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
   <footer class="site-footer">
     <div class="container">
       <p>Designed and built by <a href="https://www.instagram.com/kurniawansendhy/" target="_blank" rel="noopener noreferrer">Sendhy Kurniawan</a></p>
-      <span class="hit-counter lcd"><span>Visitors</span> <span class="hit-counter-digits">031337</span></span>
+      <span class="hit-counter lcd">
+        <span>Visitors</span>
+        <span class="hit-counter-digits" aria-hidden="true"><?= e(visitor_counter_digits($visitors)) ?></span>
+        <span class="visually-hidden"><?= $visitors === null ? 'unavailable' : (int) $visitors ?></span>
+      </span>
       <p>Best viewed at 800 &times; 600 in Internet Explorer 5</p>
     </div>
   </footer>
