@@ -51,7 +51,7 @@ function handle_guestbook_post(?PDO $pdo): array
     }
     // Honeypot: humans never see this field, bots fill it. Pretend it worked.
     if (post_string('website') !== '') {
-        return ['type' => 'success', 'message' => 'Signed. Thanks for your message!', 'old' => []];
+        return ['type' => 'success', 'message' => 'Sent! Thanks for signing my guestbook.', 'old' => []];
     }
     $wait = guestbook_cooldown_left($_SESSION['guestbook_last_sent'] ?? null, time());
     if ($wait > 0) {
@@ -81,5 +81,5 @@ function handle_guestbook_post(?PDO $pdo): array
 
     $_SESSION['guestbook_last_sent'] = time();
     throttle_record('guestbook', client_ip(), 3600);
-    return ['type' => 'success', 'message' => 'Signed. Thanks for your message!', 'old' => []];
+    return ['type' => 'success', 'message' => 'Sent! Thanks for signing my guestbook.', 'old' => []];
 }

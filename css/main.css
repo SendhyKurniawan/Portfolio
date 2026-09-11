@@ -6,9 +6,10 @@
   --pearl: #eef1f8;
   --ink: #16213e;
   --ink-soft: #46526f;
-  --bondi: #007591;
-  --bondi-hi: #4cc3df;
-  --bondi-lo: #005a70;
+  /* Plastic colour: title bars, gel buttons, links. Swapped by the iMac flavour picker */
+  --accent: #007591;
+  --accent-hi: #4cc3df;
+  --accent-lo: #005a70;
   --tangerine: #ff8a1f;
   --tangerine-hi: #ffc07a;
   --chrome: #c9d2e0;
@@ -31,6 +32,36 @@
   --shadow-window: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 0 0 1px rgba(22, 33, 62, 0.14),
     0 18px 40px -18px rgba(22, 33, 62, 0.45);
   --nav-height: 64px;
+
+  /* Liquid chrome: bright sky, hard dark horizon, reflected ground */
+  --chrome-text: linear-gradient(180deg,
+    #ffffff 0%, #eef2f9 16%, #b1bdd1 38%, #44526f 48.5%, #1b2641 51%, #6f7f9d 58%,
+    #c9d3e3 76%, #ffffff 92%, #dfe6f1 100%);
+}
+
+/* The 1999 iMac flavours. Each base colour keeps 4.5:1 contrast as link text on pearl */
+:root[data-flavour="tangerine"] {
+  --accent: #ad4f00;
+  --accent-hi: #ffb066;
+  --accent-lo: #7a3600;
+}
+
+:root[data-flavour="grape"] {
+  --accent: #6b3fa0;
+  --accent-hi: #c7a6f5;
+  --accent-lo: #4a2575;
+}
+
+:root[data-flavour="lime"] {
+  --accent: #3a7511;
+  --accent-hi: #b6ec6a;
+  --accent-lo: #285409;
+}
+
+:root[data-flavour="strawberry"] {
+  --accent: #c0264f;
+  --accent-hi: #ff9bb3;
+  --accent-lo: #8a1535;
 }
 
 *,
@@ -81,11 +112,11 @@ p {
 }
 
 a {
-  color: var(--bondi);
+  color: var(--accent);
 }
 
 a:hover {
-  color: var(--bondi-lo);
+  color: var(--accent-lo);
 }
 
 :focus-visible {
@@ -157,13 +188,13 @@ a:hover {
   gap: 10px;
   min-height: 36px;
   padding: 6px 14px;
-  background: linear-gradient(180deg, var(--bondi-hi) 0%, var(--bondi) 52%, var(--bondi-lo) 100%);
+  background: linear-gradient(180deg, var(--accent-hi) 0%, var(--accent) 52%, var(--accent-lo) 100%);
   color: #fff;
   font-family: var(--ui-font);
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  text-shadow: 0 1px 1px rgba(0, 40, 55, 0.6);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
 }
 
 .window-bar::before {
@@ -209,9 +240,9 @@ a:hover {
 /* ---------- Buttons ---------- */
 
 .btn-gel {
-  --gel-hi: var(--bondi-hi);
-  --gel: var(--bondi);
-  --gel-lo: var(--bondi-lo);
+  --gel-hi: var(--accent-hi);
+  --gel: var(--accent);
+  --gel-lo: var(--accent-lo);
   --gel-text: #fff;
   position: relative;
   display: inline-flex;
@@ -308,8 +339,8 @@ a:hover {
 
 .field:focus {
   outline: none;
-  border-color: var(--bondi);
-  box-shadow: inset 0 2px 3px rgba(22, 33, 62, 0.12), 0 0 0 3px rgba(76, 195, 223, 0.45);
+  border-color: var(--accent);
+  box-shadow: inset 0 2px 3px rgba(22, 33, 62, 0.12), 0 0 0 3px color-mix(in srgb, var(--accent-hi) 50%, transparent);
 }
 
 textarea.field {
@@ -377,6 +408,75 @@ textarea.field {
 .hit-counter-digits {
   letter-spacing: 0.12em;
   font-size: 1.5rem;
+}
+
+/* 88x31 web buttons, the badges every 2000 homepage lined up in its footer */
+.web-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.web-badge {
+  --badge: var(--accent);
+  display: grid;
+  grid-template-columns: 27px 1fr;
+  width: 88px;
+  height: 31px;
+  overflow: hidden;
+  border: 1px solid;
+  border-color: #fff #56627c #56627c #fff;
+  background: #e9edf4;
+  box-shadow: 0 0 0 1px rgba(22, 33, 62, 0.35);
+  color: var(--ink);
+  font-family: var(--ui-font);
+  font-size: 9px;
+  line-height: 1.05;
+  text-decoration: none;
+}
+
+.web-badge b {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, var(--accent-hi), var(--badge));
+  color: #fff;
+  font-size: 9px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+}
+
+.web-badge > span {
+  display: grid;
+  place-items: center;
+  padding: 0 2px;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.web-badge--lcd b {
+  background: var(--lcd);
+  color: var(--lcd-ink);
+  font-family: var(--lcd-font);
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.web-badge--tangerine b {
+  background: linear-gradient(180deg, var(--tangerine-hi), var(--tangerine));
+  color: var(--ink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.web-badge--ink b {
+  background: linear-gradient(180deg, #46526f, var(--ink));
+}
+
+a.web-badge:hover {
+  color: var(--ink);
+  filter: brightness(1.06);
 }
 
 /* ---------- Motion preferences ---------- */

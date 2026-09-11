@@ -42,6 +42,7 @@ $messages = fetch_rows($pdo, 'SELECT id, name, email, message, created_at FROM g
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="<?= e(asset_url('css/main.css', '../')) ?>">
     <link rel="stylesheet" href="<?= e(asset_url('css/admin.css', '../')) ?>">
+    <script src="<?= e(asset_url('script/flavour-boot.js', '../')) ?>"></script>
 </head>
 <body class="admin-body">
     <header class="admin-top">

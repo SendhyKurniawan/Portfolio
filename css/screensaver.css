@@ -1,0 +1,53 @@
+/* ---------- Idle screensaver: a chrome logo bouncing around a dark desktop ---------- */
+
+.screensaver {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #1d2a4d, #070a14 70%);
+  cursor: none;
+  animation: saver-in 800ms ease both;
+}
+
+.screensaver.is-waking {
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.screensaver-logo {
+  --tint: #4cc3df;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-bottom: 0.08em;
+  font-family: var(--display-font);
+  font-size: clamp(2rem, 1rem + 4vw, 4.5rem);
+  line-height: 1;
+  white-space: nowrap;
+  background: var(--chrome-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
+  filter: drop-shadow(0 0 22px var(--tint));
+  transition: filter 400ms ease;
+  will-change: transform;
+}
+
+.screensaver-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-family: var(--lcd-font);
+  font-size: 1.25rem;
+  color: rgba(195, 207, 168, 0.55);
+}
+
+@keyframes saver-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -1,9 +1,56 @@
-/* ---------- Guestbook ---------- */
+/* ---------- Guestbook as a 2003 instant messenger: buddy card + chat window ---------- */
 
-.guestbook-grid {
+.messenger {
   display: grid;
   grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
-  gap: 2rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* Buddy card */
+.buddy {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+}
+
+/* The cut-out photo sits on a gel tile in the current iMac flavour */
+.buddy-avatar {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  border: 2px solid #fff;
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, var(--accent-hi), var(--accent));
+  box-shadow: 0 0 0 1px rgba(22, 33, 62, 0.25), 0 6px 12px -6px rgba(22, 33, 62, 0.6);
+  object-fit: cover;
+}
+
+.buddy-name {
+  margin: 0;
+  font-family: var(--ui-font);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.buddy-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 0;
+  font-family: var(--ui-font);
+  font-size: 0.8125rem;
+}
+
+.status-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 30%, #d9ffc9, #4cc23a 55%, #24801a);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
 }
 
 .guestbook-subhead {
@@ -18,7 +65,7 @@
 .desk-icons {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem 0.75rem;
+  gap: 1rem 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -29,7 +76,7 @@
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  width: 4.75rem;
+  width: 4.25rem;
   text-decoration: none;
   color: var(--ink);
 }
@@ -37,16 +84,16 @@
 .desk-icon-tile {
   display: grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 14px;
   background:
     radial-gradient(120% 60% at 50% 0%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 60%),
     linear-gradient(180deg, #f4f7fb, #b9c4d6);
   border: 1px solid rgba(22, 33, 62, 0.2);
   box-shadow: inset 0 -2px 4px rgba(22, 33, 62, 0.18), 0 6px 12px -6px rgba(22, 33, 62, 0.5);
-  font-size: 1.5rem;
-  color: var(--bondi-lo);
+  font-size: 1.4rem;
+  color: var(--accent-lo);
 }
 
 .desk-icon-label {
@@ -58,7 +105,7 @@
 
 .desk-icon:hover .desk-icon-label,
 .desk-icon:focus-visible .desk-icon-label {
-  background: var(--bondi);
+  background: var(--accent);
   color: #fff;
 }
 
@@ -71,16 +118,121 @@
   outline-offset: 2px;
 }
 
-/* Form */
-.guestbook-form {
+/* Chat window */
+.chat-log {
+  min-height: 8.5rem;
+  max-height: 16rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border-bottom: 1px solid rgba(22, 33, 62, 0.15);
+  box-shadow: inset 0 2px 4px rgba(22, 33, 62, 0.08);
+  font-family: var(--ui-font);
+  font-size: 0.9375rem;
+}
+
+.chat-line {
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+}
+
+.chat-line:last-child {
+  margin-bottom: 0;
+}
+
+.chat-name {
+  font-weight: 700;
+  color: var(--accent-lo);
+}
+
+.chat-time {
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+}
+
+.chat-line--system {
+  font-weight: 700;
+  color: #1f6b2a;
+}
+
+.chat-line--buzz {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #c4001d;
+}
+
+.chat-compose {
   display: grid;
   gap: 1rem;
+  padding: 1.25rem;
 }
 
 .field-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+}
+
+/* Toolbar above the message box: emoticons and the BUZZ button */
+.chat-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.emoticon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(22, 33, 62, 0.2);
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fff, #dfe5ee);
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.emoticon:hover {
+  background: linear-gradient(180deg, #fff, #fff3c4);
+}
+
+.buzz-btn {
+  margin-left: auto;
+  min-height: 34px;
+  padding: 0.25rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffb3a8, #ff4f3a 55%, #c8250f);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 10px -5px rgba(22, 33, 62, 0.6);
+  color: #fff;
+  font-family: var(--ui-font);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.buzz-btn:active {
+  transform: translateY(1px);
+}
+
+/* BUZZ!!! shakes the whole window, just like the real thing */
+.chat-window.is-buzzing {
+  animation: buzz-shake 0.5s linear;
+}
+
+@keyframes buzz-shake {
+  0%, 100% { transform: translate(0, 0); }
+  10%, 50%, 90% { transform: translate(-7px, 2px); }
+  30%, 70% { transform: translate(7px, -2px); }
+  20%, 60% { transform: translate(-4px, -3px); }
+  40%, 80% { transform: translate(4px, 3px); }
 }
 
 .form-foot {
@@ -98,23 +250,14 @@
   color: var(--ink-soft);
 }
 
-/* Status after submitting: success reads out on the LCD, errors in a warning panel */
-.guestbook-flash {
-  padding: 10px 12px;
-  font-family: var(--ui-font);
-  font-size: 0.9375rem;
-}
-
-.guestbook-flash.lcd {
-  font-family: var(--lcd-font);
-  font-size: 1.35rem;
-}
-
 .guestbook-flash--error {
+  padding: 10px 12px;
   border-radius: 10px;
   background: #fff1ec;
   border: 1px solid #e0795b;
   color: #8a2a10;
+  font-family: var(--ui-font);
+  font-size: 0.9375rem;
 }
 
 /* Honeypot: off-screen instead of display:none so naive bots still fill it */
@@ -127,9 +270,8 @@
 }
 
 @media (max-width: 767.98px) {
-  .guestbook-grid {
+  .messenger {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
   }
 }
 

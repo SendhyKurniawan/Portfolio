@@ -162,7 +162,7 @@ check('old input is kept after error', strpos($page, 'value="not-an-email"') !==
 
 $xssName = '<script>alert(1)</script>Tester';
 http('POST', $base . '/', ['csrf_token' => $token, 'nama' => $xssName, 'email' => 'guest@smoke.test', 'pesan' => "Hello & <b>bye</b>"], $jar);
-check('valid message shows success', strpos(http('GET', $base . '/', [], $jar)['body'], 'Signed. Thanks for your message!') !== false);
+check('valid message shows success', strpos(http('GET', $base . '/', [], $jar)['body'], 'Sent! Thanks for signing my guestbook.') !== false);
 $row = $pdo->query("SELECT name, message FROM guestbook WHERE email='guest@smoke.test'")->fetch(PDO::FETCH_ASSOC);
 check('message stored raw (no double-encoding)', $row && $row['name'] === $xssName && $row['message'] === 'Hello & <b>bye</b>');
 
@@ -204,7 +204,7 @@ $img = imagecreatetruecolor(4, 4);
 imagepng($img, $png);
 $xssTitle = '<img src=x onerror=alert(1)>Smoke';
 $res = http('POST', $base . '/admin/blog_form.php', [
-    'csrf_token' => $token, 'title' => $xssTitle, 'date' => '2026-01-01', 'content' => 'Smoke body',
+    'csrf_token' => $token, 'title' => $xssTitle, 'date' => date('Y-m-d'), 'content' => 'Smoke body',
     'image_file' => new CURLFile($png, 'image/png', 'my photo.png'),
 ], $admin, true);
 unlink($png);
@@ -216,6 +216,7 @@ if ($blog) {
     $home = http('GET', $base . '/')['body'];
     check('blog title escaped on home page', strpos($home, '&lt;img src=x onerror=alert(1)&gt;Smoke') !== false
         && strpos($home, '<img src=x onerror') === false);
+    check('post dated today gets a NEW! sticker', strpos($home, 'onerror=alert(1)&gt;Smoke<span class="tag-new">NEW!</span>') !== false);
 
     $res = http('POST', $base . '/admin/delete.php', ['csrf_token' => $token, 'type' => 'blog', 'id' => $blog['id']], $admin);
     check('blog delete works', $res['status'] === 302 && !$pdo->query("SELECT 1 FROM blogs WHERE id={$blog['id']}")->fetchColumn());

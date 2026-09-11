@@ -50,14 +50,12 @@
   letter-spacing: -0.01em;
 }
 
-/* Liquid chrome: bright sky, hard dark horizon, reflected ground. One gradient per line. */
+/* Liquid chrome (--chrome-text in main.css), one gradient per line */
 .chrome-line {
   display: block;
   width: fit-content;
   padding-bottom: 0.08em;
-  background: linear-gradient(180deg,
-    #ffffff 0%, #eef2f9 16%, #b1bdd1 38%, #44526f 48.5%, #1b2641 51%, #6f7f9d 58%,
-    #c9d3e3 76%, #ffffff 92%, #dfe6f1 100%);
+  background: var(--chrome-text);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -145,7 +143,7 @@
 .sparkle {
   position: absolute;
   color: #fff;
-  filter: drop-shadow(0 0 6px rgba(76, 195, 223, 0.9));
+  filter: drop-shadow(0 0 6px var(--accent-hi));
   pointer-events: none;
 }
 

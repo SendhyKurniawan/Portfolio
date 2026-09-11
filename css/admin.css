@@ -92,7 +92,7 @@
 }
 
 .retro-table tbody tr:hover td {
-  background: rgba(76, 195, 223, 0.1);
+  background: color-mix(in srgb, var(--accent-hi) 12%, transparent);
 }
 
 .retro-table td:last-child {
@@ -134,7 +134,7 @@
 }
 
 .btn-retro:hover {
-  color: var(--bondi-lo);
+  color: var(--accent-lo);
   filter: brightness(1.05);
 }
 

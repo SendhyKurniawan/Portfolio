@@ -40,6 +40,10 @@ if ($pdo) {
 
 $ticker = "+++ WELCOME TO THE CYBER ZONE +++ EST. 2026 +++ LAST UPDATED: TODAY +++ DON'T FORGET TO SIGN THE GUESTBOOK +++ CONSTRUCTING DIGITAL REALITIES";
 $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z"/>';
+// The 1999 iMac colours; script/flavour-boot.js and script/flavour.js use the same keys
+$flavours = ['bondi' => 'Bondi Blue', 'tangerine' => 'Tangerine', 'grape' => 'Grape', 'lime' => 'Lime', 'strawberry' => 'Strawberry'];
+$emoticons = [':)' => ['🙂', 'Smile'], ':D' => ['😄', 'Big grin'], ';)' => ['😉', 'Wink'], ':P' => ['😛', 'Tongue out'], '<3' => ['❤️', 'Heart']];
+$now = time();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -67,6 +71,9 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
   <link rel="stylesheet" href="<?= e(asset_url('css/projects.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset_url('css/guestbook.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset_url('css/modal.css')) ?>">
+  <link rel="stylesheet" href="<?= e(asset_url('css/screensaver.css')) ?>">
+  <!-- Applies the saved iMac flavour before first paint, so the page never flashes blue -->
+  <script src="<?= e(asset_url('script/flavour-boot.js')) ?>"></script>
 </head>
 
 <body>
@@ -85,6 +92,21 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
           <li class="nav-item"><a class="nav-link" href="#blog">System logs</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Guestbook</a></li>
         </ul>
+        <div class="nav-tools">
+          <fieldset class="flavours">
+            <legend class="visually-hidden">Window colour</legend>
+            <?php foreach ($flavours as $value => $label): ?>
+            <label class="flavour" title="<?= e($label) ?>">
+              <input type="radio" name="flavour" value="<?= e($value) ?>" class="visually-hidden"<?= $value === 'bondi' ? ' checked' : '' ?>>
+              <span class="flavour-dot flavour-dot--<?= e($value) ?>" aria-hidden="true"></span>
+              <span class="visually-hidden"><?= e($label) ?></span>
+            </label>
+            <?php endforeach; ?>
+          </fieldset>
+          <button type="button" class="sound-toggle" aria-pressed="false" aria-label="Interface sounds" title="Interface sounds">
+            <i class="bi bi-volume-mute" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
     </nav>
   </header>
@@ -138,6 +160,9 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
         <div class="programs">
           <?php foreach ($projects as $project): ?>
           <article class="window program">
+            <?php if (is_recent($project['created_at'] ?? null, $now)): ?>
+            <span class="sticker-new"><span>NEW!</span></span>
+            <?php endif; ?>
             <div class="window-bar">
               <span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="window-title"><?= e($project['file_name']) ?></span>
@@ -193,7 +218,7 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
                 data-content="<?= e($blog['content']) ?>">
                 <time class="inbox-date" datetime="<?= e($blog['date']) ?>"><?= e($blog['date']) ?></time>
                 <span>
-                  <span class="inbox-subject"><?= e($blog['title']) ?></span>
+                  <span class="inbox-subject"><?= e($blog['title']) ?><?php if (is_recent($blog['date'], $now)): ?><span class="tag-new">NEW!</span><?php endif; ?></span>
                   <span class="inbox-preview"><?= e(excerpt($blog['content'], 110)) ?></span>
                 </span>
               </button>
@@ -214,13 +239,20 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
           <p class="section-intro">Leave a message. It goes to my inbox, not a public wall.</p>
         </div>
 
-        <div class="window">
-          <div class="window-bar">
-            <span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-            <span class="window-title">Sign my guestbook</span>
-          </div>
-          <div class="window-body guestbook-grid">
-            <div>
+        <div class="messenger">
+          <aside class="window buddy-card" aria-label="About Sendhy">
+            <div class="window-bar">
+              <span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="window-title">Buddy info</span>
+            </div>
+            <div class="window-body">
+              <div class="buddy">
+                <img src="img/avatar.png" alt="" class="buddy-avatar" width="64" height="64">
+                <div>
+                  <p class="buddy-name">Sendhy Kurniawan</p>
+                  <p class="buddy-status"><span class="status-dot" aria-hidden="true"></span>Available for projects</p>
+                </div>
+              </div>
               <h3 class="guestbook-subhead">Find me elsewhere</h3>
               <ul class="desk-icons">
                 <li>
@@ -243,13 +275,23 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
                 </li>
               </ul>
             </div>
+          </aside>
 
-            <form method="post" action="index.php#contact" class="guestbook-form">
-              <?php if ($flash): ?>
-              <div class="guestbook-flash <?= $flash['type'] === 'success' ? 'lcd' : 'guestbook-flash--error' ?>"
-                role="<?= $flash['type'] === 'success' ? 'status' : 'alert' ?>">
-                <?= e($flash['message']) ?>
-              </div>
+          <div class="window chat-window" id="chatWindow">
+            <div class="window-bar">
+              <span class="gel-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="window-title">Chat with Sendhy</span>
+            </div>
+            <div class="chat-log" role="log" aria-label="Conversation">
+              <p class="chat-line"><span class="chat-name">Sendhy:</span> Hi! Thanks for stopping by. Leave a message below and I'll reply by email.</p>
+              <?php if ($flash && $flash['type'] === 'success'): ?>
+              <p class="chat-line chat-line--system" role="status"><?= e($flash['message']) ?></p>
+              <?php endif; ?>
+            </div>
+
+            <form method="post" action="index.php#contact" class="chat-compose">
+              <?php if ($flash && $flash['type'] !== 'success'): ?>
+              <div class="guestbook-flash--error" role="alert"><?= e($flash['message']) ?></div>
               <?php endif; ?>
               <?= csrf_field() ?>
               <!-- Honeypot: hidden from people, filled in by bots -->
@@ -259,7 +301,7 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
               </div>
               <div class="field-row">
                 <div>
-                  <label for="gb-name" class="field-label">Name</label>
+                  <label for="gb-name" class="field-label">Your name</label>
                   <input type="text" id="gb-name" name="nama" class="field" maxlength="100" required
                     autocomplete="name" value="<?= e($old['name'] ?? '') ?>">
                 </div>
@@ -270,12 +312,18 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
                 </div>
               </div>
               <div>
+                <div class="chat-toolbar">
+                  <?php foreach ($emoticons as $code => [$glyph, $label]): ?>
+                  <button type="button" class="emoticon" data-emoticon="<?= e($code) ?>" aria-label="Insert <?= e(strtolower($label)) ?>" title="<?= e($label . ' ' . $code) ?>"><?= $glyph ?></button>
+                  <?php endforeach; ?>
+                  <button type="button" class="buzz-btn">BUZZ!!!</button>
+                </div>
                 <label for="gb-message" class="field-label">Message</label>
-                <textarea id="gb-message" name="pesan" class="field" rows="5" maxlength="2000" required><?= e($old['message'] ?? '') ?></textarea>
+                <textarea id="gb-message" name="pesan" class="field" rows="4" maxlength="2000" required><?= e($old['message'] ?? '') ?></textarea>
               </div>
               <div class="form-foot">
-                <p class="form-note">One message a minute, please.</p>
-                <button type="submit" class="btn-gel">Sign guestbook</button>
+                <p class="form-note">Ctrl + Enter sends. One message a minute, please.</p>
+                <button type="submit" class="btn-gel">Send</button>
               </div>
             </form>
           </div>
@@ -312,14 +360,23 @@ $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.
         <span class="hit-counter-digits" aria-hidden="true"><?= e(visitor_counter_digits($visitors)) ?></span>
         <span class="visually-hidden"><?= $visitors === null ? 'unavailable' : (int) $visitors ?></span>
       </span>
-      <p>Best viewed at 800 &times; 600 in Internet Explorer 5</p>
+      <ul class="web-badges" aria-label="Site badges">
+        <li><span class="web-badge web-badge--lcd"><b>Y2K</b><span>Compliant</span></span></li>
+        <li><span class="web-badge web-badge--ink"><b>PHP</b><span>Powered</span></span></li>
+        <li><a class="web-badge web-badge--tangerine" href="#contact"><b aria-hidden="true">✍</b><span>Guest&shy;book</span></a></li>
+        <li><span class="web-badge"><b aria-hidden="true">🖥</b><span>800&times;600 best viewed</span></span></li>
+      </ul>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
+  <script src="<?= e(asset_url('script/sound.js')) ?>" defer></script>
+  <script src="<?= e(asset_url('script/flavour.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/blog.js')) ?>" defer></script>
+  <script src="<?= e(asset_url('script/messenger.js')) ?>" defer></script>
+  <script src="<?= e(asset_url('script/screensaver.js')) ?>" defer></script>
 </body>
 
 </html>

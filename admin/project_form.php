@@ -89,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $pdo) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= e(asset_url('css/main.css', '../')) ?>">
     <link rel="stylesheet" href="<?= e(asset_url('css/admin.css', '../')) ?>">
+    <script src="<?= e(asset_url('script/flavour-boot.js', '../')) ?>"></script>
 </head>
 <body class="admin-body">
     <div class="window admin-window admin-window--form">

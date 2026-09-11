@@ -181,7 +181,7 @@
 /* Selection highlight, straight out of a 2000 mail client */
 .inbox-row:hover,
 .inbox-row:focus-visible {
-  background: linear-gradient(180deg, var(--bondi-hi), var(--bondi) 60%, var(--bondi-lo));
+  background: linear-gradient(180deg, var(--accent-hi), var(--accent) 60%, var(--accent-lo));
   color: #fff;
   outline-offset: -3px;
 }
@@ -209,4 +209,47 @@
     grid-template-columns: minmax(0, 1fr);
     row-gap: 2px;
   }
+}
+
+/* ---------- "NEW!" starburst sticker for recently added programs and logs ---------- */
+
+/* The star is clipped, so its shadow lives on the wrapper */
+.sticker-new {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  right: 10px;
+  filter: drop-shadow(0 3px 3px rgba(22, 33, 62, 0.35));
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+.sticker-new span,
+.tag-new {
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle, #fffbd1 0 20%, #ffe14d 55%, #ffb800);
+  color: #b3001b;
+  font-family: var(--ui-font);
+  font-weight: 700;
+  clip-path: polygon(50% 0%, 59% 15%, 75% 7%, 76% 24%, 93% 25%, 85% 41%, 100% 50%, 85% 59%, 93% 75%,
+    76% 76%, 75% 93%, 59% 85%, 50% 100%, 41% 85%, 25% 93%, 24% 76%, 7% 75%, 15% 59%, 0% 50%,
+    15% 41%, 7% 25%, 24% 24%, 25% 7%, 41% 15%);
+}
+
+.sticker-new span {
+  width: 64px;
+  height: 64px;
+  font-size: 0.8rem;
+}
+
+/* Inline version for inbox rows */
+.tag-new {
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
+  margin-left: 6px;
+  vertical-align: middle;
+  font-size: 0.5625rem;
+  transform: rotate(-8deg);
 }

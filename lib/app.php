@@ -9,5 +9,6 @@ require_once __DIR__ . '/upload.php';
 require_once __DIR__ . '/guestbook.php';
 require_once __DIR__ . '/assets.php';
 require_once __DIR__ . '/visitors.php';
+require_once __DIR__ . '/badges.php';
 
 const UPLOAD_DIR = __DIR__ . '/../uploads';
