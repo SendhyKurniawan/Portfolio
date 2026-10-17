@@ -75,3 +75,10 @@
   justify-content: flex-end;
   padding: 0 1.5rem 1.5rem;
 }
+
+/* ---------- Window zoom (script/window-zoom.js) ---------- */
+
+/* The window waits, laid out but unseen, while its pictures load */
+.modal.is-zooming .modal-dialog {
+  visibility: hidden;
+}

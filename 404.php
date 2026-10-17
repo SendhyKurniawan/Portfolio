@@ -18,6 +18,8 @@ $wanted = (string) ($_SERVER['REDIRECT_URL'] ?? $_SERVER['REQUEST_URI'] ?? '/');
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap" />
   <link rel="stylesheet" href="<?= e(asset_url('css/bsod.css', '/')) ?>">
+  <link rel="stylesheet" href="<?= e(asset_url('css/crt.css', '/')) ?>">
+  <script src="<?= e(asset_url('script/crt-boot.js', '/')) ?>"></script>
 </head>
 
 <body>

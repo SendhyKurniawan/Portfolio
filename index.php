@@ -47,6 +47,10 @@ if ($pdo) {
 
 $ticker = "+++ WELCOME TO THE CYBER ZONE +++ EST. 2026 +++ LAST UPDATED: TODAY +++ DON'T FORGET TO SIGN THE GUESTBOOK +++ CONSTRUCTING DIGITAL REALITIES";
 $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z"/>';
+// The hero TV's music video; its thumbnail is printed on the disc. Swap the ID to change the song,
+// but check it plays embedded first: many label videos (Daft Punk, Aqua, Darude) refuse to play off YouTube.
+// The disc uses the HD thumbnail (maxresdefault.jpg), which only HD uploads have
+$tv = ['id' => '_GXI_zz1IOM', 'title' => "Fleet Snowfluff's Memories | Practice Time"];
 // The 1999 iMac colours; script/flavour-boot.js and script/flavour.js use the same keys
 $flavours = ['bondi' => 'Bondi Blue', 'tangerine' => 'Tangerine', 'grape' => 'Grape', 'lime' => 'Lime', 'strawberry' => 'Strawberry'];
 $emoticons = [':)' => ['🙂', 'Smile'], ':D' => ['😄', 'Big grin'], ';)' => ['😉', 'Wink'], ':P' => ['😛', 'Tongue out'], '<3' => ['❤️', 'Heart']];
@@ -103,8 +107,10 @@ $albums = array_map(
   <link rel="stylesheet" href="<?= e(asset_url('css/system.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset_url('css/screensaver.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset_url('css/mode-1999.css')) ?>">
+  <link rel="stylesheet" href="<?= e(asset_url('css/crt.css')) ?>">
   <!-- Applies the saved iMac flavour before first paint, so the page never flashes blue -->
   <script src="<?= e(asset_url('script/flavour-boot.js')) ?>"></script>
+  <script src="<?= e(asset_url('script/crt-boot.js')) ?>"></script>
 </head>
 
 <body>
@@ -172,11 +178,28 @@ $albums = array_map(
           </div>
 
           <div class="disc-wrap" aria-hidden="true">
-            <div class="disc"></div>
+            <div class="disc">
+              <div class="disc-label" style="--disc-art: url('https://i.ytimg.com/vi/<?= e($tv['id']) ?>/maxresdefault.jpg')"></div>
+            </div>
             <div class="disc-shine"></div>
             <div class="disc-rim"></div>
             <svg class="sparkle sparkle--a" viewBox="0 0 24 24"><?= $sparkle ?></svg>
             <svg class="sparkle sparkle--b" viewBox="0 0 24 24"><?= $sparkle ?></svg>
+          </div>
+
+          <div class="tv-slot">
+            <div class="tv" data-title="<?= e($tv['title']) ?>">
+              <div class="tv-screen">
+                <iframe src="https://www.youtube-nocookie.com/embed/<?= e($tv['id']) ?>?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=<?= e($tv['id']) ?>&amp;controls=0&amp;playsinline=1&amp;rel=0&amp;enablejsapi=1"
+                  title="Music video: <?= e($tv['title']) ?>" allow="autoplay; encrypted-media; picture-in-picture"
+                  referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              </div>
+              <div class="tv-panel">
+                <span class="lcd tv-lcd" aria-hidden="true">TUNING...</span>
+                <button type="button" class="tv-btn tv-sound" aria-pressed="false"><span class="tv-led"></span>Sound</button>
+                <button type="button" class="tv-btn tv-power" aria-pressed="false"><span class="tv-led"></span>Power</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -487,7 +510,7 @@ $albums = array_map(
   </main>
 
   <!-- Log viewer -->
-  <div class="modal fade log-modal" id="blogModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal log-modal" id="blogModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="window-bar">
@@ -507,7 +530,7 @@ $albums = array_map(
   </div>
 
   <!-- Picture viewer, shared by the gallery and the certificates -->
-  <div class="modal fade viewer-modal" id="viewerModal" tabindex="-1" aria-labelledby="viewerTitle" aria-hidden="true">
+  <div class="modal viewer-modal" id="viewerModal" tabindex="-1" aria-labelledby="viewerTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
         <div class="window-bar">
@@ -555,7 +578,9 @@ $albums = array_map(
   <script src="<?= e(asset_url('script/blog.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/messenger.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/gallery.js')) ?>" defer></script>
+  <script src="<?= e(asset_url('script/window-zoom.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/screensaver.js')) ?>" defer></script>
+  <script src="<?= e(asset_url('script/tv.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/konami.js')) ?>" defer></script>
 </body>
 
