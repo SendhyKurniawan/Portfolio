@@ -69,7 +69,7 @@ function handle_guestbook_post(?PDO $pdo): array
         return ['type' => 'error', 'message' => implode(' ', $result['errors']), 'old' => $input];
     }
     if ($pdo === null) {
-        return ['type' => 'error', 'message' => 'Your message could not be saved because the database is offline. Please email me instead.', 'old' => $input];
+        return ['type' => 'error', 'message' => 'Your message couldn\'t be saved because the database is offline. Please email me at sendhy27@gmail.com instead.', 'old' => $input];
     }
 
     try {

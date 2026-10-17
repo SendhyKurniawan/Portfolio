@@ -25,40 +25,40 @@ if ($pdo) {
     if ($count == 0) {
         $projects_seed = [
             [
-                'CUFFOUR VOL2',
-                'CUFFOUR is a foreign language extracurricular program at SMAN 54 Jakarta. A dynamic platform showcasing diverse cultures including Japanese, Korean, and German.',
+                'CUFFOUR Vol. 2',
+                'Official site for CUFFOUR Vol. 2, the 2021 culture festival run by XBASS54, the foreign-language club at SMAN 54 Jakarta. I designed and built it end to end: competition pages, a fan art gallery and the guest star line-up, all in Indonesian.',
                 'HTML, CSS, JS, Bootstrap 5',
                 'img/projects/web/cuffour.jpeg',
                 'https://cuffourvol2.github.io/cuffourvol2/index.html',
                 'CUFFOUR_VOL2.EXE'
             ],
             [
-                'LYNX STREZZO NFT',
-                'A digital oasis of boundless creativity. A veritable gallery of the future where infinite possibilities converge.',
+                'Lynx Strezzo NFT',
+                'Landing page for Lynx Strezzo, a 2022 NFT collection on Polygon about a gloomy lynx. I designed and built it end to end: the character story, four rarity tiers and a phased roadmap, with AOS scroll animations.',
                 'HTML, CSS, JS, AOS',
                 'img/projects/web/lynx.jpeg',
                 'https://sendhykurniawan.github.io/Lynx-Strezzo-NFT-V2/',
                 'LYNX_NFT.EXE'
             ],
             [
-                'LA PIZZERIA',
-                'An educational project replicating and reinventing a web presence, honing skills in web development and UX.',
+                'La Pizzeria',
+                'Practice homepage for a pizza restaurant, with specials, best sellers and a menu. I built it with Bootstrap 5 to sharpen my layout and UX skills.',
                 'HTML, CSS, JS, Bootstrap 5',
                 'img/projects/web/pizzeria.jpeg',
                 'https://sendhykurniawan.github.io/lapizzeria/',
                 'PIZZERIA.EXE'
             ],
             [
-                'MRS FURNITURE',
-                'Crafting an innovative digital platform for a visionary business concept, redefining the furniture retail experience.',
+                'Mr. S Furniture',
+                'Concept site for a furniture store, built in 2023 by a team of four. I was one of two web developers; the site covers services, a room-by-room catalog, the team and contact details.',
                 'HTML, CSS, JS, AOS',
                 'img/projects/web/mrsfurniture.jpeg',
                 'https://sendhykurniawan.github.io/mrsfurniture/',
                 'MRS_FURNITURE.EXE'
             ],
             [
-                'IMEDIA 2023',
-                'A comprehensive orientation hub for incoming college students. Resources, guidance, and insights for a seamless transition.',
+                'iMEDIA 2023',
+                'Orientation site for new students at Polimedia, used during the 2023 intake. I designed and built it end to end: a map of the campus buildings, fun facts, student reviews and the event mascot, Googi, all in Indonesian.',
                 'HTML, CSS, JS, AOS',
                 'img/projects/web/imedia.jpeg',
                 'https://sendhykurniawan.github.io/iMEDIA2023/',
