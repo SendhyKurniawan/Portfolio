@@ -33,6 +33,7 @@ services:
       - db_data:/var/lib/mysql
     ports:
       - "127.0.0.1:3388:3306"
+    restart: always
 
 volumes:
   db_data:
