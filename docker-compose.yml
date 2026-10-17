@@ -3,7 +3,8 @@ services:
     container_name: portfolio_y2k
     build: .
     ports:
-      - "8095:80"
+      # Loopback only: the public entrance is the Cloudflare tunnel, not the LAN.
+      - "127.0.0.1:8095:80"
     volumes:
       - .:/var/www/html
     environment:
@@ -33,6 +34,7 @@ services:
       - db_data:/var/lib/mysql
     ports:
       - "127.0.0.1:3388:3306"
+    restart: always
 
 volumes:
   db_data:
