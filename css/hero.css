@@ -78,11 +78,15 @@
   margin-top: 2rem;
 }
 
-/* The disc: rainbow data side of a CD-R, spun up once like a drive reading it */
+/* The disc: rainbow data side of a CD-R, spun up once like a drive reading it.
+   Shares its grid cell with the TV, leaving room underneath for the set */
 .disc-wrap {
   position: relative;
-  justify-self: center;
-  width: min(440px, 100%);
+  grid-area: 1 / 2;
+  align-self: start;
+  justify-self: end;
+  width: min(400px, 100%);
+  margin-bottom: 150px;
   aspect-ratio: 1;
   filter: drop-shadow(0 30px 40px rgba(22, 33, 62, 0.35)) drop-shadow(0 0 1px rgba(22, 33, 62, 0.5));
 }
@@ -125,8 +129,28 @@
   pointer-events: none;
 }
 
+/* Picture disc: the TV video's thumbnail (--disc-art from index.php) printed out to the edge,
+   leaving the disc's clear hub and stacking ring showing. Inside .disc so it turns with it */
+.disc-label {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--disc-art) center / cover no-repeat;
+  -webkit-mask: radial-gradient(circle, transparent 0 20.4%, #000 20.8%);
+  mask: radial-gradient(circle, transparent 0 20.4%, #000 20.8%);
+}
+
 .disc-wrap:hover .disc {
   animation: disc-idle 7s linear infinite;
+}
+
+/* script/tv.js sets data-state while the TV's sound is on; a pause stops the disc where it is */
+.disc-wrap[data-state] .disc {
+  animation: disc-idle 4s linear infinite;
+}
+
+.disc-wrap[data-state="paused"] .disc {
+  animation-play-state: paused;
 }
 
 @keyframes disc-spin-up {
@@ -159,14 +183,153 @@
   right: 4%;
 }
 
+/* ---------- The TV: a little CRT playing the disc's music video (script/tv.js) ---------- */
+
+/* In front of the disc's lower-left edge. The slot keeps the TV's place while it's docked */
+.tv-slot {
+  grid-area: 1 / 2;
+  align-self: end;
+  justify-self: start;
+  z-index: 1;
+}
+
+/* Translucent iMac plastic in the current flavour */
+.tv {
+  position: relative;
+  width: 308px;
+  padding: 14px 14px 10px;
+  border-radius: 24px 24px 18px 18px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent-hi) 70%, #fff), var(--accent) 55%, var(--accent-lo));
+  box-shadow: inset 0 2px 1px rgba(255, 255, 255, 0.7), inset 0 -3px 6px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(22, 33, 62, 0.25), 0 24px 36px -16px rgba(22, 33, 62, 0.55);
+}
+
+/* Rabbit ears: two diagonal rods with ball tips, on a chrome dome */
+.tv::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  width: 96px;
+  height: 46px;
+  translate: -50% 0;
+  background:
+    radial-gradient(circle at 4px 4px, #fff 2px, #9aa5ba 3.5px, transparent 4px) left top / 8px 8px no-repeat,
+    radial-gradient(circle at 4px 4px, #fff 2px, #9aa5ba 3.5px, transparent 4px) right top / 8px 8px no-repeat,
+    linear-gradient(to top right, transparent calc(50% - 1.5px), #8a94a8 50%, transparent calc(50% + 1.5px)) left / 50% 100% no-repeat,
+    linear-gradient(to top left, transparent calc(50% - 1.5px), #8a94a8 50%, transparent calc(50% + 1.5px)) right / 50% 100% no-repeat;
+}
+
+.tv::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 28px;
+  height: 10px;
+  translate: -50% 0;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(180deg, #eef2f9, #8a94a8);
+}
+
+/* The tube. Nothing is laid over the video itself: YouTube's terms forbid covering the player */
+.tv-screen {
+  padding: 6px;
+  border-radius: 16px / 20px;
+  background: #0b0d12;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* 268 × 201: YouTube needs at least 200 × 200 of player */
+.tv-screen iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  border-radius: 10px / 14px;
+}
+
+.tv-panel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.tv-lcd {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 6px 8px 4px;
+  font-size: 1.05rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff, var(--chrome));
+  color: var(--ink);
+  font: 700 0.625rem/1 var(--ui-font);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.tv-btn:active {
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+.tv-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #5b6375;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+.tv-btn[aria-pressed="true"] .tv-led {
+  background: #4dff7a;
+  box-shadow: 0 0 6px #4dff7a;
+}
+
+/* Docked: rides along in the corner while the music plays, popping in the choppy 2000 way */
+.tv.is-docked {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 1035;
+  animation: tv-dock 300ms steps(6) both;
+}
+
+@keyframes tv-dock {
+  from { transform: translateY(30%) scale(0.5); opacity: 0; }
+}
+
 @media (max-width: 991.98px) {
   .hero-grid {
     grid-template-columns: 1fr;
   }
 
   .disc-wrap {
+    grid-area: 1 / 1;
+    justify-self: center;
     width: min(300px, 72vw);
-    grid-row: 1;
+    margin-bottom: 0;
+  }
+
+  /* After the hero copy, so the headline still opens the page */
+  .tv-slot {
+    grid-area: auto;
+    justify-self: center;
+    margin-top: 3rem;
   }
 }
 

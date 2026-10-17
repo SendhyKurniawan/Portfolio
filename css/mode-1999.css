@@ -68,6 +68,11 @@ html[data-mode-1999] .section-title {
   }
 }
 
+/* Docked TV clears the construction banner */
+html[data-mode-1999] .tv.is-docked {
+  bottom: 3rem;
+}
+
 .mode-1999 {
   position: fixed;
   right: 1rem;

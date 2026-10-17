@@ -1,0 +1,85 @@
+/* CRT glass laid over the whole page: scanlines, phosphor stripes, a curved dark edge
+   and rounded tube corners. pointer-events: none sends every click to the page beneath */
+
+html::before,
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Scanlines over faint red/green/blue phosphor columns */
+html::before {
+  background:
+    linear-gradient(transparent 50%, rgba(0, 0, 0, 0.12) 50%) 0 0 / 100% 3px,
+    linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.015), rgba(0, 0, 255, 0.04)) 0 0 / 3px 100%;
+  animation: crt-flicker 120ms steps(2) infinite;
+}
+
+/* The tube: a window glare on the bulging glass, edges falling into shadow, a dark rim,
+   and a spread shadow that paints the corners outside the rounded glass black like a bezel.
+   The shadow list order (glow, rim, edge, bezel) must match crt-power-on to animate */
+html::after {
+  border-radius: 40px / 56px;
+  background:
+    radial-gradient(ellipse 70% 45% at 28% 12%, rgba(255, 255, 255, 0.16), transparent 70%),
+    radial-gradient(ellipse at center, transparent 48%, rgba(0, 0, 0, 0.42) 100%);
+  box-shadow:
+    0 0 1.5rem 0.5rem rgba(210, 235, 255, 0),
+    inset 0 0 0 2px rgba(0, 0, 0, 0.5),
+    inset 0 0 7rem rgba(0, 0, 0, 0.4),
+    0 0 0 100vmax #0b0d12;
+  animation: crt-power-on 1.1s ease-out both;
+}
+
+@keyframes crt-flicker {
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* Switching the set on: a glowing dot, a line across, the picture opening up, the flash fading */
+@keyframes crt-power-on {
+  0% {
+    inset: 50% 50%;
+    background-color: #fff;
+    box-shadow:
+      0 0 1.5rem 0.5rem rgba(210, 235, 255, 0.9),
+      inset 0 0 0 0 rgba(0, 0, 0, 0),
+      inset 0 0 0 rgba(0, 0, 0, 0),
+      0 0 0 100vmax #0b0d12;
+  }
+
+  20% {
+    inset: calc(50% - 1px) 0;
+    background-color: #fff;
+    box-shadow:
+      0 0 1.5rem 0.5rem rgba(210, 235, 255, 0.9),
+      inset 0 0 0 0 rgba(0, 0, 0, 0),
+      inset 0 0 0 rgba(0, 0, 0, 0),
+      0 0 0 100vmax #0b0d12;
+  }
+
+  55% {
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* script/crt-boot.js marks every page after the first one in a visit */
+html[data-crt-warm]::after {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html::before,
+  html::after {
+    animation: none;
+  }
+}

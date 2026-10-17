@@ -45,8 +45,12 @@ if ($pdo) {
     }
 }
 
-$ticker = "+++ WELCOME TO THE CYBER ZONE +++ EST. 2026 +++ LAST UPDATED: TODAY +++ DON'T FORGET TO SIGN THE GUESTBOOK +++ CONSTRUCTING DIGITAL REALITIES";
+$ticker = "+++ WELCOME TO KURSE CO. +++ WEB DESIGN & FULL-STACK DEVELOPMENT +++ PHP / MYSQL / JAVASCRIPT +++ OPEN FOR PROJECTS AND ROLES +++ SIGN THE GUESTBOOK +++ EST. 2026";
 $sparkle = '<path fill="currentColor" d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z"/>';
+// The hero TV's music video; its thumbnail is printed on the disc. Swap the ID to change the song,
+// but check it plays embedded first: many label videos (Daft Punk, Aqua, Darude) refuse to play off YouTube.
+// The disc uses the HD thumbnail (maxresdefault.jpg), which only HD uploads have
+$tv = ['id' => '_GXI_zz1IOM', 'title' => "Fleet Snowfluff's Memories | Practice Time"];
 // The 1999 iMac colours; script/flavour-boot.js and script/flavour.js use the same keys
 $flavours = ['bondi' => 'Bondi Blue', 'tangerine' => 'Tangerine', 'grape' => 'Grape', 'lime' => 'Lime', 'strawberry' => 'Strawberry'];
 $emoticons = [':)' => ['🙂', 'Smile'], ':D' => ['😄', 'Big grin'], ';)' => ['😉', 'Wink'], ':P' => ['😛', 'Tongue out'], '<3' => ['❤️', 'Heart']];
@@ -72,13 +76,13 @@ $albums = array_map(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sendhy Kurniawan | KURSE CO.</title>
-  <meta name="description" content="Sendhy Kurniawan designs and builds websites. Projects, notes and a guestbook, served Millennium Edition style." />
+  <title>Sendhy Kurniawan — Full-Stack Web Developer | KURSE CO.</title>
+  <meta name="description" content="Portfolio of full-stack web developer Sendhy Kurniawan: event sites, a campus guide and landing pages. Open for freelance projects and roles." />
   <meta name="theme-color" content="#eef1f8" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💿</text></svg>" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Sendhy Kurniawan | KURSE CO." />
-  <meta property="og:description" content="Websites designed and built by Sendhy Kurniawan." />
+  <meta property="og:title" content="Sendhy Kurniawan — Full-Stack Web Developer" />
+  <meta property="og:description" content="Event sites, a campus guide and landing pages, designed and built by Sendhy Kurniawan." />
   <meta property="og:url" content="<?= e(absolute_url('index.php')) ?>" />
   <?php if (is_file(__DIR__ . '/img/og.jpg')): ?>
   <meta property="og:image" content="<?= e(absolute_url(asset_url('img/og.jpg'))) ?>" />
@@ -103,8 +107,10 @@ $albums = array_map(
   <link rel="stylesheet" href="<?= e(asset_url('css/system.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset_url('css/screensaver.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset_url('css/mode-1999.css')) ?>">
+  <link rel="stylesheet" href="<?= e(asset_url('css/crt.css')) ?>">
   <!-- Applies the saved iMac flavour before first paint, so the page never flashes blue -->
   <script src="<?= e(asset_url('script/flavour-boot.js')) ?>"></script>
+  <script src="<?= e(asset_url('script/crt-boot.js')) ?>"></script>
 </head>
 
 <body>
@@ -127,7 +133,7 @@ $albums = array_map(
         </ul>
         <div class="nav-tools">
           <fieldset class="flavours">
-            <legend class="visually-hidden">Window colour</legend>
+            <legend class="visually-hidden">Window color</legend>
             <?php foreach ($flavours as $value => $label): ?>
             <label class="flavour" title="<?= e($label) ?>">
               <input type="radio" name="flavour" value="<?= e($value) ?>" class="visually-hidden"<?= $value === 'bondi' ? ' checked' : '' ?>>
@@ -161,7 +167,7 @@ $albums = array_map(
               <span class="chrome-line">KURSE</span>
               <span class="chrome-line">CO.</span>
             </h1>
-            <p class="hero-lede">Hi, I'm Sendhy Kurniawan. I design and build websites, from school event pages to shop fronts.</p>
+            <p class="hero-lede">Hi, I'm Sendhy Kurniawan, a full-stack web developer. I design and build sites for schools, events and small businesses.</p>
             <div class="hero-actions">
               <a href="mailto:sendhy27@gmail.com" class="btn-gel btn-gel--tangerine">Hire me</a>
               <a href="#contact" class="btn-gel btn-gel--chrome">Sign the guestbook</a>
@@ -172,11 +178,28 @@ $albums = array_map(
           </div>
 
           <div class="disc-wrap" aria-hidden="true">
-            <div class="disc"></div>
+            <div class="disc">
+              <div class="disc-label" style="--disc-art: url('https://i.ytimg.com/vi/<?= e($tv['id']) ?>/maxresdefault.jpg')"></div>
+            </div>
             <div class="disc-shine"></div>
             <div class="disc-rim"></div>
             <svg class="sparkle sparkle--a" viewBox="0 0 24 24"><?= $sparkle ?></svg>
             <svg class="sparkle sparkle--b" viewBox="0 0 24 24"><?= $sparkle ?></svg>
+          </div>
+
+          <div class="tv-slot">
+            <div class="tv" data-title="<?= e($tv['title']) ?>">
+              <div class="tv-screen">
+                <iframe src="https://www.youtube-nocookie.com/embed/<?= e($tv['id']) ?>?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=<?= e($tv['id']) ?>&amp;controls=0&amp;playsinline=1&amp;rel=0&amp;enablejsapi=1"
+                  title="Music video: <?= e($tv['title']) ?>" allow="autoplay; encrypted-media; picture-in-picture"
+                  referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              </div>
+              <div class="tv-panel">
+                <span class="lcd tv-lcd" aria-hidden="true">TUNING...</span>
+                <button type="button" class="tv-btn tv-sound" aria-pressed="false"><span class="tv-led"></span>Sound</button>
+                <button type="button" class="tv-btn tv-power" aria-pressed="false"><span class="tv-led"></span>Power</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -186,7 +209,7 @@ $albums = array_map(
       <div class="container">
         <div class="section-head">
           <h2 id="projects-heading" class="nama section-title">Programs</h2>
-          <p class="section-intro">Sites I've designed and built. Each one opens in a new tab.</p>
+          <p class="section-intro">Websites I've designed and built, solo and in teams. Each one opens in a new tab.</p>
         </div>
 
         <?php if ($projects): ?>
@@ -228,7 +251,7 @@ $albums = array_map(
       <div class="container">
         <div class="section-head">
           <h2 id="system-heading" class="nama section-title">System properties</h2>
-          <p class="section-intro">What's installed on this machine, and the paperwork that came with it.</p>
+          <p class="section-intro">The tools I build with, plus the course certificates on file.</p>
         </div>
 
         <div class="window sysprops">
@@ -302,7 +325,7 @@ $albums = array_map(
       <div class="container">
         <div class="section-head">
           <h2 id="pictures-heading" class="nama section-title">My Pictures</h2>
-          <p class="section-intro">Edits and photo manipulations I make away from client work. Open one to see it full size.</p>
+          <p class="section-intro">Anime edits and photo manipulations I make outside web work. Open one to see it full size.</p>
         </div>
 
         <div class="window gallery-window">
@@ -383,7 +406,7 @@ $albums = array_map(
       <div class="container">
         <div class="section-head">
           <h2 id="contact-heading" class="nama section-title">Guestbook</h2>
-          <p class="section-intro">Say hello. I read every message, and I post some of them here once I've approved them.</p>
+          <p class="section-intro">Say hello or ask a question. I read every message, and approved ones appear here.</p>
         </div>
 
         <div class="messenger">
@@ -487,7 +510,7 @@ $albums = array_map(
   </main>
 
   <!-- Log viewer -->
-  <div class="modal fade log-modal" id="blogModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal log-modal" id="blogModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="window-bar">
@@ -507,7 +530,7 @@ $albums = array_map(
   </div>
 
   <!-- Picture viewer, shared by the gallery and the certificates -->
-  <div class="modal fade viewer-modal" id="viewerModal" tabindex="-1" aria-labelledby="viewerTitle" aria-hidden="true">
+  <div class="modal viewer-modal" id="viewerModal" tabindex="-1" aria-labelledby="viewerTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
         <div class="window-bar">
@@ -542,7 +565,7 @@ $albums = array_map(
         <li><span class="web-badge web-badge--lcd"><b>Y2K</b><span>Compliant</span></span></li>
         <li><span class="web-badge web-badge--ink"><b>PHP</b><span>Powered</span></span></li>
         <li><a class="web-badge web-badge--tangerine" href="#contact"><b aria-hidden="true">✍</b><span>Guest&shy;book</span></a></li>
-        <li><span class="web-badge"><b aria-hidden="true">🖥</b><span>800&times;600 best viewed</span></span></li>
+        <li><span class="web-badge"><b aria-hidden="true">🖥</b><span>Best viewed 800&times;600</span></span></li>
       </ul>
     </div>
   </footer>
@@ -555,7 +578,9 @@ $albums = array_map(
   <script src="<?= e(asset_url('script/blog.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/messenger.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/gallery.js')) ?>" defer></script>
+  <script src="<?= e(asset_url('script/window-zoom.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/screensaver.js')) ?>" defer></script>
+  <script src="<?= e(asset_url('script/tv.js')) ?>" defer></script>
   <script src="<?= e(asset_url('script/konami.js')) ?>" defer></script>
 </body>
 
